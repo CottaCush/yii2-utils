@@ -1,0 +1,51 @@
+{
+    "name": "cottacush/yii2-utils",
+    "type": "library",
+    "description": "Yii2 utils provides various utility classes and helpers that are compatible with the Yii2 framework",
+    "keywords": [
+        "http",
+        "adapters",
+        "helpers",
+        "utils",
+        "cottacush",
+        "yii2"
+    ],
+    "homepage": "https://github.com/cottacush/yii2-utils",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Adegoke Obasa",
+            "email": "goke@cottacush.com",
+            "homepage": "http://cottacush.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php" : "~5.5",
+        "yiisoft/yii2": ">=2.0.8",
+        "linslin/yii2-curl" : "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit" : "~4.0||~5.0",
+        "scrutinizer/ocular": "~1.1",
+        "squizlabs/php_codesniffer": "~2.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "CottaCush\\Yii2\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "CottaCush\\Yii2\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "phpunit"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}

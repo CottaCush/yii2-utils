@@ -28,7 +28,6 @@ $ composer require cottacush/yii2-utils
 
 The following versions of PHP are supported by this version.
 
-* PHP 5.4
 * PHP 5.5
 * PHP 5.6
 

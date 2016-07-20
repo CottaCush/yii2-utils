@@ -75,5 +75,5 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 [link-scrutinizer]: https://scrutinizer-ci.com/g/cottacush/yii2-utils/code-structure
 [link-code-quality]: https://scrutinizer-ci.com/g/cottacush/yii2-utils
 [link-downloads]: https://packagist.org/packages/cottacush/yii2-utils
-[link-author]: https://github.com/CottaCush
+[link-author]: https://github.com/goke-epapa
 [link-contributors]: ../../contributors

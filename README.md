@@ -3,7 +3,7 @@
 [![Latest Version on Packagist][ico-version]][link-packagist]
 [![Software License][ico-license]](LICENSE.md)
 [![Build Status][ico-travis]][link-travis]
-[![Coverage Status](ico-coveralls)](link-coveralls)
+[![Coverage Status][ico-coveralls]][link-coveralls]
 [![Total Downloads][ico-downloads]][link-downloads]
 
 Yii2 utils provides various utility classes and helpers needed compatible with the Yii2 framework

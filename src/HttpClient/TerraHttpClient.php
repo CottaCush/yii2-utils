@@ -41,7 +41,6 @@ class TerraHttpClient extends BaseHttpClient
     {
         if ($this->useOauth) {
             $params['access_token'] = $this->getAccessToken();
-            $this->lastRequestParams['access_token'] = $this->getAccessToken();
         }
         $params = http_build_query($params);
         return $this->baseUrl . $url . '?' . $params;

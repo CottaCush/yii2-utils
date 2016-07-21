@@ -12,6 +12,8 @@ use yii\helpers\Json;
 class TerraHttpClientTest extends \PHPUnit_Framework_TestCase
 {
     const BASE_URL = "http://jsonplaceholder.typicode.com";
+    private $testPostParams = ['title' => 'test', 'author' => 'test'];
+    const ACCESS_TOKEN = "123456";
 
     /** @var  $httpClient TerraHttpClient */
     protected $httpClient;
@@ -31,11 +33,23 @@ class TerraHttpClientTest extends \PHPUnit_Framework_TestCase
         new TerraHttpClient('');
     }
 
-    public function testInitialize()
+    public function testBaseUrlNotNull()
     {
         $this->assertNotNull($this->httpClient->getBaseUrl());
+    }
+
+    public function testBaseUrl()
+    {
         $this->assertSame(self::BASE_URL . "/", $this->httpClient->getBaseUrl());
+    }
+
+    public function testCurlAgentNotNull()
+    {
         $this->assertNotNull($this->httpClient->getCurlAgent());
+    }
+
+    public function testCurlAgent()
+    {
         $this->assertInstanceOf(Curl::class, $this->httpClient->getCurlAgent());
     }
 
@@ -49,9 +63,13 @@ class TerraHttpClientTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->httpClient->useJsonResponse()->isRawResponse());
     }
 
-    public function testUseAccessToken()
+    public function testUseAccessTokenWhenUseOauthTrue()
     {
         $this->assertTrue($this->httpClient->isUseOauth());
+    }
+
+    public function testUseAccessTokenWhenUseOauthFalse()
+    {
         $this->httpClient->setUseOauth(false);
         $this->assertFalse($this->httpClient->isUseOauth());
     }
@@ -59,11 +77,13 @@ class TerraHttpClientTest extends \PHPUnit_Framework_TestCase
     public function testSetAccessToken()
     {
         $this->assertNull($this->httpClient->getAccessToken());
-        $accessToken = '1234567890';
-        $this->httpClient->setAccessToken($accessToken);
-        $this->assertEquals($accessToken, $this->httpClient->getAccessToken());
+        $this->httpClient->setAccessToken(self::ACCESS_TOKEN);
+        $this->assertEquals(self::ACCESS_TOKEN, $this->httpClient->getAccessToken());
         $this->httpClient->get('posts');
-        $this->assertArrayHasKey('access_token', $this->httpClient->getLastRequestParams());
+        $this->assertContains(
+            'access_token=' . $this->httpClient->getAccessToken(),
+            $this->httpClient->getLastRequestUrl()
+        );
     }
 
     public function testBuildUrl()
@@ -104,161 +124,89 @@ class TerraHttpClientTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(Json::decode($rawResponse), $jsonResponse);
     }
 
-    public function testPostWithRawResponseWithoutAccessToken()
+    public function testPostWithRawResponse()
     {
-        $params = ['title' => 'test', 'author' => 'test'];
         $response = $this->httpClient
             ->useRawResponse()
             ->setUseOauth(false)
-            ->post('posts', $params);
+            ->post('posts', $this->testPostParams);
         $this->assertJson($response);
-        $this->assertEquals($params, $this->httpClient->getLastRequestParams());
     }
 
-    public function testPostWithRawResponseWithAccessToken()
+    public function testPostWithJsonResponse()
     {
-        $params = ['title' => 'test', 'author' => 'test'];
-        $response = $this->httpClient
-            ->useRawResponse()
-            ->setAccessToken("123456")
-            ->post('posts', $params);
-        $this->assertJson($response);
-        $this->assertEquals(
-            array_merge($params, ['access_token' => $this->httpClient->getAccessToken()]),
-            $this->httpClient->getLastRequestParams()
-        );
-    }
-
-    public function testPostWithJsonResponseWithoutAccessToken()
-    {
-        $params = ['title' => 'test', 'author' => 'test'];
         $response = $this->httpClient
             ->useJsonResponse()
             ->setUseOauth(false)
-            ->post('posts', $params);
+            ->post('posts', $this->testPostParams);
         $this->assertEquals(['id' => 101], $response);
-        $this->assertEquals($params, $this->httpClient->getLastRequestParams());
     }
 
-    public function testPostWithJsonResponseWithAccessToken()
+    public function testPutWithRawResponse()
     {
-        $params = ['title' => 'test', 'author' => 'test'];
+        $id = 1;
+        $response = $this->httpClient
+            ->useRawResponse()
+            ->setUseOauth(false)
+            ->put("posts/$id", $this->testPostParams);
+        $this->assertJson($response);
+    }
+
+    public function testPutWithJsonResponse()
+    {
+        $id = 1;
         $response = $this->httpClient
             ->useJsonResponse()
-            ->setAccessToken("123456")
+            ->setUseOauth(false)
+            ->put("posts/$id", $this->testPostParams);
+        $this->assertEquals(['id' => $id], $response);
+    }
+
+    public function testDeleteWithRawResponse()
+    {
+        $id = 1;
+        $response = $this->httpClient
+            ->useRawResponse()
+            ->setUseOauth(false)
+            ->delete("posts/$id", $this->testPostParams);
+        $this->assertJson($response);
+    }
+
+    public function testDeleteWithJsonResponse()
+    {
+        $id = 1;
+        $response = $this->httpClient
+            ->useJsonResponse()
+            ->setUseOauth(false)
+            ->delete("posts/$id", $this->testPostParams);
+        $this->assertEquals([], $response);
+    }
+
+    public function testGetParams()
+    {
+        $this->httpClient
+            ->useRawResponse()
+            ->setAccessToken(self::ACCESS_TOKEN)
+            ->get('posts', $this->testPostParams);
+        $this->assertEquals($this->testPostParams, $this->httpClient->getLastRequestParams());
+    }
+
+    public function testPostParams()
+    {
+        $this->httpClient
+            ->useRawResponse()
+            ->setAccessToken(self::ACCESS_TOKEN)
+            ->post('posts', $this->testPostParams);
+        $this->assertEquals($this->testPostParams, $this->httpClient->getLastRequestParams());
+    }
+
+    public function testPostJsonBody()
+    {
+        $params = Json::encode($this->testPostParams);
+        $this->httpClient
+            ->useRawResponse()
+            ->setAccessToken(self::ACCESS_TOKEN)
             ->post('posts', $params);
-        $this->assertEquals(['id' => 101], $response);
-        $this->assertEquals(
-            array_merge($params, ['access_token' => $this->httpClient->getAccessToken()]),
-            $this->httpClient->getLastRequestParams()
-        );
-    }
-
-    public function testPutWithRawResponseWithoutAccessToken()
-    {
-        $id = 1;
-        $params = ['title' => 'test', 'author' => 'test'];
-        $response = $this->httpClient
-            ->useRawResponse()
-            ->setUseOauth(false)
-            ->put("posts/$id", $params);
-        $this->assertJson($response);
-        $this->assertEquals($params, $this->httpClient->getLastRequestParams());
-    }
-
-    public function testPutWithRawResponseWithAccessToken()
-    {
-        $id = 1;
-        $params = ['title' => 'test', 'author' => 'test'];
-        $response = $this->httpClient
-            ->useRawResponse()
-            ->setAccessToken("123456")
-            ->put("posts/$id", $params);
-        $this->assertJson($response);
-        $this->assertEquals(
-            array_merge($params, ['access_token' => $this->httpClient->getAccessToken()]),
-            $this->httpClient->getLastRequestParams()
-        );
-    }
-
-    public function testPutWithJsonResponseWithoutAccessToken()
-    {
-        $id = 1;
-        $params = ['title' => 'test', 'author' => 'test'];
-        $response = $this->httpClient
-            ->useJsonResponse()
-            ->setUseOauth(false)
-            ->put("posts/$id", $params);
-        $this->assertEquals(['id' => $id], $response);
-        $this->assertEquals($params, $this->httpClient->getLastRequestParams());
-    }
-
-    public function testPutWithJsonResponseWithAccessToken()
-    {
-        $id = 1;
-        $params = ['title' => 'test', 'author' => 'test'];
-        $response = $this->httpClient
-            ->useJsonResponse()
-            ->setAccessToken("123456")
-            ->put("posts/$id", $params);
-        $this->assertEquals(['id' => $id], $response);
-        $this->assertEquals(
-            array_merge($params, ['access_token' => $this->httpClient->getAccessToken()]),
-            $this->httpClient->getLastRequestParams()
-        );
-    }
-
-    public function testDeleteWithRawResponseWithoutAccessToken()
-    {
-        $id = 1;
-        $params = ['title' => 'test', 'author' => 'test'];
-        $response = $this->httpClient
-            ->useRawResponse()
-            ->setUseOauth(false)
-            ->delete("posts/$id", $params);
-        $this->assertJson($response);
-        $this->assertEquals($params, $this->httpClient->getLastRequestParams());
-    }
-
-    public function testDeleteWithRawResponseWithAccessToken()
-    {
-        $id = 1;
-        $params = ['title' => 'test', 'author' => 'test'];
-        $response = $this->httpClient
-            ->useRawResponse()
-            ->setAccessToken("123456")
-            ->delete("posts/$id", $params);
-        $this->assertJson($response);
-        $this->assertEquals(
-            array_merge($params, ['access_token' => $this->httpClient->getAccessToken()]),
-            $this->httpClient->getLastRequestParams()
-        );
-    }
-
-    public function testDeleteWithJsonResponseWithoutAccessToken()
-    {
-        $id = 1;
-        $params = ['title' => 'test', 'author' => 'test'];
-        $response = $this->httpClient
-            ->useJsonResponse()
-            ->setUseOauth(false)
-            ->delete("posts/$id", $params);
-        $this->assertEquals([], $response);
-        $this->assertEquals($params, $this->httpClient->getLastRequestParams());
-    }
-
-    public function testDeleteWithJsonResponseWithAccessToken()
-    {
-        $id = 1;
-        $params = ['title' => 'test', 'author' => 'test'];
-        $response = $this->httpClient
-            ->useJsonResponse()
-            ->setAccessToken("123456")
-            ->delete("posts/$id", $params);
-        $this->assertEquals([], $response);
-        $this->assertEquals(
-            array_merge($params, ['access_token' => $this->httpClient->getAccessToken()]),
-            $this->httpClient->getLastRequestParams()
-        );
+        $this->assertJson($this->httpClient->getLastRequestParams());
     }
 }

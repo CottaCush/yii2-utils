@@ -9,7 +9,6 @@ namespace CottaCush\Yii2\Date;
  */
 class DateFormat
 {
-
     const FORMAT_LAST_DAY_OF_MONTH = 'Y-m-t';
     const FORMAT_YEAR = 'Y';
     const FORMAT_FRIENDLY_DATE = 'd M Y';

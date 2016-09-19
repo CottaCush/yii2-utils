@@ -6,6 +6,8 @@ use CottaCush\Yii2\OauthClient\Exceptions\Oauth2ClientException;
 use linslin\yii2\curl\Curl;
 use yii\authclient\OAuth2;
 use yii\authclient\OAuthToken;
+use yii\base\Exception;
+use yii\base\InvalidParamException;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -22,6 +24,14 @@ class Oauth2Client
     const INVALID_TOKEN_URL = 'Invalid token url %s';
     const INVALID_CLIENT_ID = 'Invalid client ID';
     const INVALID_CLIENT_SECRET = 'Invalid client secret';
+    const GRANT_TYPE_AUTHORIZATION_CODE = 'authorization_code';
+    const RESPONSE_TYPE_CODE = 'code';
+    const STATE_ALIVE = 'alive';
+    const AUTH_URL = 'authUrl';
+    const TOKEN_URL = 'tokenUrl';
+    const CLIENT_ID = 'clientId';
+    const CLIENT_SECRET = 'clientSecret';
+
     protected $clientId;
     protected $clientSecret;
     protected $authUrl;
@@ -34,10 +44,6 @@ class Oauth2Client
      * @var Curl $curl
      */
     protected $curl;
-
-    const GRANT_TYPE_AUTHORIZATION_CODE = 'authorization_code';
-    const RESPONSE_TYPE_CODE = 'code';
-    const STATE_ALIVE = 'alive';
 
     /**
      * Oauth2Client constructor.
@@ -80,20 +86,25 @@ class Oauth2Client
      * @author Adegoke Obasa <goke@cottacush.com>
      * @return mixed code
      * @throws Oauth2ClientException
+     * @throws InvalidParamException
      */
     public function authorize()
     {
         $this->validateAuthParams();
-        $response = $this->curl->setOption(
-            CURLOPT_POSTFIELDS,
-            http_build_query(array(
-                'grant_type' => self::GRANT_TYPE_AUTHORIZATION_CODE,
-                'client_id' => $this->clientId,
-                'client_secret' => $this->clientSecret,
-                'response_type' => self::RESPONSE_TYPE_CODE,
-                'state' => self::STATE_ALIVE
-            ))
-        )->post($this->authUrl, false);
+        try {
+            $response = $this->curl->setOption(
+                CURLOPT_POSTFIELDS,
+                http_build_query(array(
+                    'grant_type' => self::GRANT_TYPE_AUTHORIZATION_CODE,
+                    'client_id' => $this->clientId,
+                    'client_secret' => $this->clientSecret,
+                    'response_type' => self::RESPONSE_TYPE_CODE,
+                    'state' => self::STATE_ALIVE
+                ))
+            )->post($this->authUrl, false);
+        } catch (InvalidParamException $invalidParamException) {
+            throw new Oauth2ClientException($invalidParamException->getMessage());
+        }
         return $this->handleAuthorizeResponse($response);
     }
 
@@ -136,8 +147,11 @@ class Oauth2Client
         $this->oauth2->clientId = $this->clientId;
         $this->oauth2->clientSecret = $this->clientSecret;
 
-        $response = $this->oauth2->fetchAccessToken($code);
-
+        try {
+            $response = $this->oauth2->fetchAccessToken($code);
+        } catch (Exception $ex) {
+            throw new Oauth2ClientException($ex->getMessage());
+        }
         return $this->handleTokenResponse($response);
     }
 
@@ -194,10 +208,10 @@ class Oauth2Client
      */
     private function setDefaultParams($params)
     {
-        $this->authUrl = ArrayHelper::getValue($params, 'authUrl');
-        $this->tokenUrl = ArrayHelper::getValue($params, 'tokenUrl');
-        $this->clientId = ArrayHelper::getValue($params, 'clientId');
-        $this->clientSecret = ArrayHelper::getValue($params, 'clientSecret');
+        $this->authUrl = ArrayHelper::getValue($params, self::AUTH_URL);
+        $this->tokenUrl = ArrayHelper::getValue($params, self::TOKEN_URL);
+        $this->clientId = ArrayHelper::getValue($params, self::CLIENT_ID);
+        $this->clientSecret = ArrayHelper::getValue($params, self::CLIENT_SECRET);
     }
 
     /**
@@ -270,5 +284,23 @@ class Oauth2Client
     public function setTokenUrl($tokenUrl)
     {
         $this->tokenUrl = $tokenUrl;
+    }
+
+    /**
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @return OAuth2
+     */
+    public function getOauth2()
+    {
+        return $this->oauth2;
+    }
+
+    /**
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @return Curl
+     */
+    public function getCurl()
+    {
+        return $this->curl;
     }
 }

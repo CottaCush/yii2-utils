@@ -1,5 +1,10 @@
 # Changelog
 
+#### 1.2.0
+
+* Add Oauth2Client for getting Oauth2 tokens *2016-09-19*
+
+
 #### 1.1.0
 * Add Date Utils for date formatting and processing *2016-09-16*
 

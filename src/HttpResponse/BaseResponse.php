@@ -18,11 +18,13 @@ abstract class BaseResponse
     /**
      * BaseResponse constructor.
      * @param $response
+     * @param bool $responseParsed
      * @author Adegoke Obasa <goke@cottacush.com>
      */
-    public function __construct($response)
+    public function __construct($response, $responseParsed = false)
     {
         $this->rawResponse = $this->parsedResponse = $response;
+        $this->responseParsed = $responseParsed;
     }
 
     /**
@@ -36,7 +38,7 @@ abstract class BaseResponse
 
     /**
      * @author Adegoke Obasa <goke@cottacush.com>
-     * @return \SimpleXMLElement
+     * @return mixed
      */
     public function getParsedResponse()
     {
@@ -75,17 +77,6 @@ abstract class BaseResponse
      * @return mixed
      */
     abstract public function getSuccessValue();
-
-    /**
-     * @author Adegoke Obasa <goke@cottacush.com>
-     * @param boolean $responseParsed
-     * @return BaseResponse
-     */
-    public function setResponseParsed($responseParsed)
-    {
-        $this->responseParsed = $responseParsed;
-        return $this;
-    }
 
     /**
      * @author Adegoke Obasa <goke@cottacush.com>

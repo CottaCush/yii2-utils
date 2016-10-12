@@ -14,6 +14,8 @@ class JSendResponse extends BaseResponse
 
     const RESPONSE_STATUS_PARAM = 'status';
     const RESPONSE_DATA_PARAM = 'data';
+    const RESPONSE_CODE_PARAM = 'code';
+    const RESPONSE_MESSAGE_PARAM = 'message';
     const RESPONSE_STATUS_SUCCESS = 'success';
     const RESPONSE_STATUS_OK = 'OK';
     const CODE_NO_CODE = '000';
@@ -22,51 +24,47 @@ class JSendResponse extends BaseResponse
     protected $rawResponse;
     protected $responseParsed = false;
 
-    public function __construct($response)
+    public function __construct($response, $responseParsed = false)
     {
-        parent::__construct($response);
+        parent::__construct($response, $responseParsed);
         if ($this->responseParsed) {
             $this->parsedResponse = Json::decode($response);
         }
     }
 
     /**
-     * Get's the data from the response
+     * Gets the data from the response
      * @author Adegoke Obasa <goke@cottacush.com>
-     * @author Adeyemi Olaoye <yemi@cottacush.com>
-     * @param null $field
-     * @param string $dataKey
+     * @param null $defaultValue
      * @return mixed
      */
-    public function getData($field = null, $dataKey = 'data')
+    public function getData($defaultValue = null)
     {
-        if (is_null($field)) {
-            $field = $dataKey;
-        } else {
-            $field = $dataKey . '.' . $field;
-        }
-
-        return ArrayHelper::getValue($this->rawResponse, $field);
+        return ArrayHelper::getValue($this->parsedResponse, self::RESPONSE_DATA_PARAM, $defaultValue);
     }
 
     /**
-     * Get's the error message from the response
+     * Gets the error message from the response
      * @author Adegoke Obasa <goke@cottacush.com>
      * @return mixed
      */
     public function getErrorMessage()
     {
-        return ArrayHelper::getValue($this->rawResponse, 'message', self::ERROR_MESSAGE_AN_UNEXPECTED_ERROR_OCCURRED);
+        return ArrayHelper::getValue(
+            $this->parsedResponse,
+            self::RESPONSE_MESSAGE_PARAM,
+            self::ERROR_MESSAGE_AN_UNEXPECTED_ERROR_OCCURRED
+        );
     }
 
     /**
-     * Get's the response code from the response
+     * Gets the response code from the response
      * @author Adegoke Obasa <goke@cottacush.com>
      * @return mixed
      */
     public function getCode()
     {
-        return ArrayHelper::getValue($this->rawResponse, 'code', self::CODE_NO_CODE);
+        return ArrayHelper::getValue($this->parsedResponse, self::RESPONSE_CODE_PARAM, self::CODE_NO_CODE);
     }
 
     /**
@@ -103,5 +101,25 @@ class JSendResponse extends BaseResponse
     public function getSuccessValue()
     {
         return self::RESPONSE_STATUS_SUCCESS;
+    }
+
+    /**
+     * Gets the code parameter
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @return string
+     */
+    public function getCodeParam()
+    {
+        return self::RESPONSE_CODE_PARAM;
+    }
+
+    /**
+     * Gets the message parameter
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @return string
+     */
+    public function getMessageParam()
+    {
+        return self::RESPONSE_MESSAGE_PARAM;
     }
 }

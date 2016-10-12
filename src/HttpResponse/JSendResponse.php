@@ -5,11 +5,11 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 
 /**
- * Class JSendResponseHandler
+ * Class JSendResponse
  * @package app\libs
  * @author Adegoke Obasa <goke@cottacush.com>
  */
-class JSendResponseHandler extends BaseResponse
+class JSendResponse extends BaseResponse
 {
 
     const RESPONSE_STATUS_PARAM = 'status';

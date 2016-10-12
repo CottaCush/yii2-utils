@@ -30,10 +30,17 @@ The following versions of PHP are supported by this version.
 * PHP 5.5
 * PHP 5.6
 
+## Features 
+
+The following are available:
+
+* HttpClient
+* Oauth2Client
+* HttpResponse
+
 ## Todo
 
 - Add Adapters
-- Add Response Handlers
 
 ## Change log
 

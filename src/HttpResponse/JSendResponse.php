@@ -23,10 +23,10 @@ class JSendResponse extends BaseResponse
     protected $rawResponse;
     protected $responseParsed = false;
 
-    public function __construct($response, $responseParsed = false)
+    public function __construct($response, $responseParsed = true)
     {
         parent::__construct($response, $responseParsed);
-        if ($this->responseParsed) {
+        if (!$this->responseParsed) {
             $this->parsedResponse = Json::decode($response);
         }
     }

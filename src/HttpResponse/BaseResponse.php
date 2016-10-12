@@ -13,7 +13,10 @@ abstract class BaseResponse
 {
     protected $rawResponse;
     protected $parsedResponse;
-    protected $responseParsed = true;
+    /**
+     * @var bool Whether response has already been parsed or not
+     */
+    protected $responseParsed;
 
     /**
      * BaseResponse constructor.
@@ -21,7 +24,7 @@ abstract class BaseResponse
      * @param bool $responseParsed
      * @author Adegoke Obasa <goke@cottacush.com>
      */
-    public function __construct($response, $responseParsed = false)
+    public function __construct($response, $responseParsed = true)
     {
         $this->rawResponse = $this->parsedResponse = $response;
         $this->responseParsed = $responseParsed;

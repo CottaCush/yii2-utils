@@ -24,13 +24,13 @@ class JSendResponseTest extends \PHPUnit_Framework_TestCase
     public function testGetResponseParsedIsFalseByDefault()
     {
         $jsonResponse = new JSendResponse([]);
-        $this->assertEquals($jsonResponse->isResponseParsed(), false);
+        $this->assertEquals($jsonResponse->isResponseParsed(), true);
     }
 
     public function testGetResponseParsedIsActualValueSet()
     {
-        $jsonResponse = new JSendResponse(json_encode([]), true);
-        $this->assertEquals($jsonResponse->isResponseParsed(), true);
+        $jsonResponse = new JSendResponse(json_encode([]), false);
+        $this->assertEquals($jsonResponse->isResponseParsed(), false);
     }
 
     public function testResponseRawResponseIsSet()
@@ -55,37 +55,37 @@ class JSendResponseTest extends \PHPUnit_Framework_TestCase
     {
         $words = $this->faker->words;
 
-        $jsonResponse = new JSendResponse(json_encode($words), true);
+        $jsonResponse = new JSendResponse(json_encode($words), false);
         $this->assertEquals($jsonResponse->getParsedResponse(), $words);
     }
 
     public function testStatusParamIsCorrect()
     {
-        $jsonResponse = new JSendResponse(json_encode([]), true);
+        $jsonResponse = new JSendResponse(json_encode([]), false);
         $this->assertEquals($jsonResponse->getStatusParam(), JSendResponse::RESPONSE_STATUS_PARAM);
     }
 
     public function testCodeParamIsCorrect()
     {
-        $jsonResponse = new JSendResponse(json_encode([]), true);
+        $jsonResponse = new JSendResponse(json_encode([]), false);
         $this->assertEquals($jsonResponse->getCodeParam(), JSendResponse::RESPONSE_CODE_PARAM);
     }
 
     public function testMessageParamIsCorrect()
     {
-        $jsonResponse = new JSendResponse(json_encode([]), true);
+        $jsonResponse = new JSendResponse(json_encode([]), false);
         $this->assertEquals($jsonResponse->getMessageParam(), JSendResponse::RESPONSE_MESSAGE_PARAM);
     }
 
     public function testSuccessValueIsCorrect()
     {
-        $jsonResponse = new JSendResponse(json_encode([]), true);
+        $jsonResponse = new JSendResponse(json_encode([]), false);
         $this->assertEquals($jsonResponse->getSuccessValue(), JSendResponse::RESPONSE_STATUS_SUCCESS);
     }
 
     public function testIsSuccessReturnsTrueWhenStatusIsSuccessWhenResponseIsParsed()
     {
-        $jsonResponse = new JSendResponse(json_encode(['status' => JSendResponse::RESPONSE_STATUS_SUCCESS]), true);
+        $jsonResponse = new JSendResponse(json_encode(['status' => JSendResponse::RESPONSE_STATUS_SUCCESS]), false);
         $this->assertEquals($jsonResponse->isSuccess(), true);
     }
 
@@ -97,7 +97,7 @@ class JSendResponseTest extends \PHPUnit_Framework_TestCase
 
     public function testIsSuccessReturnsFalseWhenStatusIsSuccessWhenResponseIsParsed()
     {
-        $jsonResponse = new JSendResponse(json_encode(['status' => 'error']), true);
+        $jsonResponse = new JSendResponse(json_encode(['status' => 'error']), false);
         $this->assertEquals($jsonResponse->isSuccess(), false);
     }
 
@@ -117,7 +117,7 @@ class JSendResponseTest extends \PHPUnit_Framework_TestCase
     public function testGetErrorMessageWhenResponseIsParsed()
     {
         $message = $this->faker->sentence;
-        $jsonResponse = new JSendResponse(json_encode(['status' => 'error', 'message' => $message]), true);
+        $jsonResponse = new JSendResponse(json_encode(['status' => 'error', 'message' => $message]), false);
         $this->assertEquals($jsonResponse->getErrorMessage(), $message);
     }
 
@@ -131,7 +131,7 @@ class JSendResponseTest extends \PHPUnit_Framework_TestCase
     public function testGetCodeWhenResponseIsParsed()
     {
         $code = $this->faker->randomDigitNotNull;
-        $jsonResponse = new JSendResponse(json_encode(['status' => 'error', 'code' => $code]), true);
+        $jsonResponse = new JSendResponse(json_encode(['status' => 'error', 'code' => $code]), false);
         $this->assertEquals($jsonResponse->getCode(), $code);
     }
 
@@ -143,7 +143,7 @@ class JSendResponseTest extends \PHPUnit_Framework_TestCase
 
     public function testGetCodeWhenSetAndResponseIsParsed()
     {
-        $jsonResponse = new JSendResponse(json_encode(['status' => 'error']), true);
+        $jsonResponse = new JSendResponse(json_encode(['status' => 'error']), false);
         $this->assertEquals($jsonResponse->getCode(), JSendResponse::CODE_NO_CODE);
     }
 
@@ -157,7 +157,7 @@ class JSendResponseTest extends \PHPUnit_Framework_TestCase
     public function testGetDataWhenResponseIsParsed()
     {
         $words = $this->faker->words;
-        $jsonResponse = new JSendResponse(json_encode(['status' => 'success', 'data' => $words]), true);
+        $jsonResponse = new JSendResponse(json_encode(['status' => 'success', 'data' => $words]), false);
         $this->assertEquals($jsonResponse->getData(), $words);
     }
 
@@ -169,7 +169,7 @@ class JSendResponseTest extends \PHPUnit_Framework_TestCase
 
     public function testGetDataWhenNotSetAndResponseIsParsed()
     {
-        $jsonResponse = new JSendResponse(json_encode(['status' => 'success']), true);
+        $jsonResponse = new JSendResponse(json_encode(['status' => 'success']), false);
         $this->assertEquals($jsonResponse->getData([]), []);
     }
 
@@ -183,7 +183,7 @@ class JSendResponseTest extends \PHPUnit_Framework_TestCase
     public function testGetWhenResponseIsParsed()
     {
         $words = $this->faker->words;
-        $jsonResponse = new JSendResponse(json_encode(['status' => 'success', 'data' => compact('words')]), true);
+        $jsonResponse = new JSendResponse(json_encode(['status' => 'success', 'data' => compact('words')]), false);
         $this->assertEquals($jsonResponse->get('words'), $words);
     }
 
@@ -195,7 +195,7 @@ class JSendResponseTest extends \PHPUnit_Framework_TestCase
 
     public function testGetWhenNotSetAndResponseIsParsed()
     {
-        $jsonResponse = new JSendResponse(json_encode(['status' => 'success']), true);
+        $jsonResponse = new JSendResponse(json_encode(['status' => 'success']), false);
         $this->assertEquals($jsonResponse->get('words', []), []);
     }
 }

@@ -11,7 +11,6 @@ use yii\helpers\Json;
  */
 class JSendResponse extends BaseResponse
 {
-
     const RESPONSE_STATUS_PARAM = 'status';
     const RESPONSE_DATA_PARAM = 'data';
     const RESPONSE_CODE_PARAM = 'code';

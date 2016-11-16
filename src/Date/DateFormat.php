@@ -37,5 +37,5 @@ class DateFormat
     const FORMAT_MYSQL_STYLE = 'Y-m-d H:i:s';
     const FORMAT_DAY = 'jS';
     const FORMAT_LONG = 'jS F Y';
-    const FORMAT_DATE_TIME_LONG = FORMAT_LONG.' \a\t h:iA';
+    const FORMAT_DATE_TIME_LONG = 'jS F Y \a\t h:iA';
 }

@@ -18,12 +18,18 @@
             "email": "goke@cottacush.com",
             "homepage": "http://cottacush.com",
             "role": "Developer"
+        },
+        {
+            "name": "Olawale Lawal",
+            "email": "wale@cottacush.com",
+            "homepage": "http://cottacush.com",
+            "role": "Developer"
         }
     ],
     "require": {
         "php" : "~5.5",
         "yiisoft/yii2": ">=2.0.8",
-        "linslin/yii2-curl" : "*",
+        "linslin/yii2-curl" : "~1.0.0",
         "yiisoft/yii2-authclient": "~2.0.0",
         "fzaninotto/faker": "^1.6"
     },

@@ -181,4 +181,18 @@ class Oauth2ClientTest extends \PHPUnit_Framework_TestCase
         ]);
         $oauthClient->fetchAccessToken($this->faker->randomDigitNotNull);
     }
+
+    /**
+     * @expectedException \CottaCush\Yii2\OauthClient\Exceptions\Oauth2ClientException
+     * @author Akinwunmi Taiwo <taiwo@cottacush.com>
+     */
+    public function testFetchTokenWithClientGrantType()
+    {
+        $oauthClient = new Oauth2Client([
+            Oauth2Client::TOKEN_URL => $this->faker->url,
+            Oauth2Client::CLIENT_ID => $this->faker->md5,
+            Oauth2Client::CLIENT_SECRET => $this->faker->md5,
+        ]);
+        $oauthClient->fetchAccessTokenWithClientCredentials();
+    }
 }

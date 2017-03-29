@@ -31,7 +31,6 @@ class Oauth2Client
     const TOKEN_URL = 'tokenUrl';
     const CLIENT_ID = 'clientId';
     const CLIENT_SECRET = 'clientSecret';
-
     const GRANT_TYPE_CLIENT_CREDENTIALS = 'client_credentials';
 
     protected $clientId;
@@ -58,7 +57,6 @@ class Oauth2Client
         $this->oauth2 = new OAuth2();
         $this->curl = new Curl();
     }
-
 
     /**
      * Handles authorize request response
@@ -115,9 +113,9 @@ class Oauth2Client
      * @return mixed
      * @throws Oauth2ClientException
      */
-    public function fetchAccessTokenWithClientCredentials(){
+    public function fetchAccessTokenWithClientCredentials()
+    {
         $this->validateTokenParams();
-
         try {
             $response = $this->curl->setOption(
                 CURLOPT_POSTFIELDS,
@@ -143,7 +141,7 @@ class Oauth2Client
      */
     private function handleTokenResponse($response)
     {
-        $params = ($response instanceof OAuthToken)? $response->getParams(): $response;
+        $params = ($response instanceof OAuthToken) ? $response->getParams() : $response;
         $status = ArrayHelper::getValue($params, 'status');
         if (!is_null($status) && $status == 'success') {
             $token = ArrayHelper::getValue($params, 'data');

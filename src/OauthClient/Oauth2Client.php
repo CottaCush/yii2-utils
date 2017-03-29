@@ -116,7 +116,8 @@ class Oauth2Client
     public function fetchAccessTokenWithClientCredentials()
     {
         $this->validateTokenParams();
-        try {
+        try
+        {
             $response = $this->curl->setOption(
                 CURLOPT_POSTFIELDS,
                 http_build_query(array(

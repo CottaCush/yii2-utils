@@ -121,4 +121,17 @@ class JSendResponse extends BaseResponse
     {
         return self::RESPONSE_MESSAGE_PARAM;
     }
+
+    /**
+     * Checks if the response is a success response
+     * @author Olawale Lawal <wale@cottacush.com>
+     * @param string $successStatus
+     * @return bool
+     */
+    public function isSuccess($successStatus = self::RESPONSE_STATUS_SUCCESS)
+    {
+        $status = ArrayHelper::getValue($this->rawResponse, self::RESPONSE_STATUS_PARAM);
+
+        return $status === $successStatus;
+    }
 }

@@ -326,4 +326,19 @@ class Oauth2Client
     {
         return $this->curl;
     }
+
+    /**
+     * Returns the access token
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @return mixed
+     */
+    public static function getAccessToken()
+    {
+        $oauthClientParams = ArrayHelper::getValue(\Yii::$app->params, 'oauth');
+        $oauthClient = new Oauth2Client($oauthClientParams);
+        $code = $oauthClient->authorize();
+        $token = $oauthClient->fetchAccessToken($code);
+        $accessToken = ArrayHelper::getValue($token, 'access_token');
+        return $accessToken;
+    }
 }

@@ -18,6 +18,12 @@
             "email": "goke@cottacush.com",
             "homepage": "http://cottacush.com",
             "role": "Developer"
+        },
+        {
+            "name": "Olawale Lawal",
+            "email": "wale@cottacush.com",
+            "homepage": "http://cottacush.com",
+            "role": "Developer"
         }
     ],
     "require": {

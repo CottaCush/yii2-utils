@@ -31,6 +31,7 @@ class Oauth2Client
     const TOKEN_URL = 'tokenUrl';
     const CLIENT_ID = 'clientId';
     const CLIENT_SECRET = 'clientSecret';
+    const GRANT_TYPE_CLIENT_CREDENTIALS = 'client_credentials';
 
     protected $clientId;
     protected $clientSecret;
@@ -56,7 +57,6 @@ class Oauth2Client
         $this->oauth2 = new OAuth2();
         $this->curl = new Curl();
     }
-
 
     /**
      * Handles authorize request response
@@ -108,6 +108,29 @@ class Oauth2Client
         return $this->handleAuthorizeResponse($response);
     }
 
+    /**
+     * @author Akinwunmi Taiwo <taiwo@cottacush.com>
+     * @return mixed
+     * @throws Oauth2ClientException
+     */
+    public function fetchAccessTokenWithClientCredentials()
+    {
+        $this->validateTokenParams();
+        try {
+            $response = $this->curl->setOption(
+                CURLOPT_POSTFIELDS,
+                http_build_query(array(
+                    'grant_type' => self::GRANT_TYPE_CLIENT_CREDENTIALS,
+                    'client_id' => $this->clientId,
+                    'client_secret' => $this->clientSecret
+                ))
+            )->post($this->tokenUrl, false);
+        } catch (InvalidParamException $invalidParamException) {
+            throw new Oauth2ClientException($invalidParamException->getMessage());
+        }
+
+        return $this->handleTokenResponse($response);
+    }
 
     /**
      * Handles token request response
@@ -118,7 +141,7 @@ class Oauth2Client
      */
     private function handleTokenResponse($response)
     {
-        $params = $response->getParams();
+        $params = ($response instanceof OAuthToken) ? $response->getParams() : $response;
         $status = ArrayHelper::getValue($params, 'status');
         if (!is_null($status) && $status == 'success') {
             $token = ArrayHelper::getValue($params, 'data');

@@ -1,8 +1,20 @@
 # Changelog
 
-#### 1.4.0
+#### 1.7.0
 
 * Support PHP version 7 *2017-05-24*
+
+#### 1.6.0
+
+* Added `getAccessToken()` *2017-05-05*
+
+#### 1.5.0
+
+* Upgraded the lislin cURL dependencies *2017-05-05*
+
+#### 1.4.0
+
+* Fetch Access Token with Client Credentials Grant Type *2017-03-27*
 
 
 #### 1.3.0

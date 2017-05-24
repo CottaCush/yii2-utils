@@ -27,7 +27,7 @@
         }
     ],
     "require": {
-        "php" : "~5.5",
+        "php" : "~5.5|~7.0",
         "yiisoft/yii2": ">=2.0.8",
         "linslin/yii2-curl" : "^1.1.3",
         "yiisoft/yii2-authclient": "~2.0.0",

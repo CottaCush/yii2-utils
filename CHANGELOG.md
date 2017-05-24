@@ -1,5 +1,10 @@
 # Changelog
 
+#### 1.4.0
+
+* Support PHP version 7 *2017-05-24*
+
+
 #### 1.3.0
 
 * Add JSendResponse for handling JSend formatted API responses *2016-10-12*

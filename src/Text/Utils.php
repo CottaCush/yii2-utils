@@ -10,6 +10,7 @@ use yii\helpers\Html;
  * Class Utils
  * @package app\libs
  * @author Olawale Lawal <wale@cottacush.com>
+ * @codeCoverageIgnore
  */
 class Utils
 {

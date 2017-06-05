@@ -12,6 +12,7 @@ use yii\helpers\ArrayHelper;
  * Class BaseModel
  * @package app\models
  * @author Olawale Lawal <wale@cottacush.com>
+ * @codeCoverageIgnore
  */
 class BaseModel extends ActiveRecord
 {

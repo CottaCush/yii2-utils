@@ -12,6 +12,7 @@ use yii\web\Response;
  * Class BaseController
  * @package app\controllers
  * @author Adegoke Obasa <goke@cottacush.com>
+ * @codeCoverageIgnore
  */
 class BaseController extends Controller
 {

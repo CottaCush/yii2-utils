@@ -1,5 +1,9 @@
 # Changelog
 
+#### 1.8.0
+
+* Support PHP version 7 *2017-06-05*
+
 #### 1.7.0
 
 * Support PHP version 7 *2017-05-24*

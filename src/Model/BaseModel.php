@@ -3,6 +3,7 @@
 namespace CottaCush\Yii2\Model;
 
 use CottaCush\Yii2\Date\DateUtils;
+use CottaCush\Yii2\Text\Utils;
 use yii\data\ActiveDataProvider;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
@@ -187,11 +188,12 @@ class BaseModel extends ActiveRecord
     /**
      * Get hash for model id
      * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param $salt
      * @return string
      */
-    public function getIdHash()
+    public function getIdHash($salt)
     {
-        return Utils::encodeId($this->id);
+        return Utils::encodeId($this->id, $salt);
     }
 
     /**

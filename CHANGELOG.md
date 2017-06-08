@@ -1,8 +1,12 @@
 # Changelog
 
+#### 1.9.0
+
+* Add base console controller *2017-06-08*
+
 #### 1.8.0
 
-* Support PHP version 7 *2017-06-05*
+* Add base controller, model and text utils *2017-06-05*
 
 #### 1.7.0
 

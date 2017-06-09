@@ -1,5 +1,10 @@
 # Changelog
 
+#### 1.10.0
+
+* Add is POST method check to BaseController *2017-06-09*
+
+
 #### 1.9.0
 
 * Add base console controller *2017-06-08*

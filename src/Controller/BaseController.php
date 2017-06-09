@@ -243,7 +243,6 @@ class BaseController extends Controller
         }
 
 
-
         return $flashMessage . implode('<br/>', $flashMessageArr);
     }
 
@@ -256,5 +255,32 @@ class BaseController extends Controller
     public function getModuleUser()
     {
         return $this->module->get('user');
+    }
+
+    /**
+     * @author Olawale Lawal <wale@cottacush.com>
+     * @param $url
+     */
+    public function sendTerminalResponse($url)
+    {
+        $this->redirect($url)->send();
+        Yii::$app->end();
+    }
+
+    /**
+     * Checks if the current request is a POST and handles redirection
+     * @author Olawale Lawal <wale@cottacush.com>
+     * @param null $redirectUrl
+     * @return bool
+     */
+    public function isPostCheck($redirectUrl = null)
+    {
+        if ($this->getRequest()->isPost) {
+            return true;
+        }
+        if (is_null($redirectUrl)) {
+            return false;
+        }
+        $this->sendTerminalResponse($redirectUrl);
     }
 }

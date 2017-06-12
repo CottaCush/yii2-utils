@@ -4,6 +4,7 @@ namespace CottaCush\Yii2\Controller;
 
 use Lukasoppermann\Httpstatus\Httpstatus;
 use Yii;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\web\Controller;
 use yii\web\Response;
@@ -242,7 +243,6 @@ class BaseController extends Controller
             }
         }
 
-
         return $flashMessage . implode('<br/>', $flashMessageArr);
     }
 
@@ -282,5 +282,73 @@ class BaseController extends Controller
             return false;
         }
         $this->sendTerminalResponse($redirectUrl);
+    }
+
+
+    /**
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param \yii\base\Action $action
+     * @return bool
+     */
+    public function beforeAction($action)
+    {
+        $excludedPaths = ArrayHelper::getValue(\Yii::$app->params, 'excludedPaths', []);
+
+        $currentRoute = $this->getRoute();
+
+        /**
+         * Check if route is in the excluded path
+         */
+        if ($this->getUser()->isGuest) {
+            if (!in_array($currentRoute, $excludedPaths)) {
+                $this->getUser()->loginRequired();
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param $message
+     * @return \yii\web\Response
+     */
+    public function returnError($message)
+    {
+        $this->flashError($message);
+        return $this->redirect($this->getRequest()->getReferrer());
+    }
+
+    /**
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param $message
+     * @return \yii\web\Response
+     */
+    public function returnSuccess($message)
+    {
+        $this->flashSuccess($message);
+        return $this->redirect($this->getRequest()->getReferrer());
+    }
+
+    /**
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param $widget
+     * @param $config
+     * @return string
+     */
+    public function renderWidgetAsAjax($widget, $config)
+    {
+        ob_start();
+        ob_implicit_flush(false);
+
+        $this->view->beginPage();
+        $this->view->head();
+        $this->view->beginBody();
+        echo $widget::widget($config);
+        $this->view->endBody();
+        $this->view->endPage(true);
+
+        return ob_get_clean();
     }
 }

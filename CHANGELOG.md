@@ -1,5 +1,9 @@
 # Changelog
 
+#### 1.11.0
+
+* Add more utility methods to BaseController *2017-06-12*
+
 #### 1.10.0
 
 * Add is POST method check to BaseController *2017-06-09*

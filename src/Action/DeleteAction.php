@@ -19,6 +19,7 @@ class DeleteAction extends Action
     public $errorMessage = 'Record not found';
 
     /**
+     * @author Adegoke Obasa <goke@cottacush.com>
      * @author Akinwunmi Taiwo <taiwo@cottacush.com>
      * @return \yii\web\Response
      */

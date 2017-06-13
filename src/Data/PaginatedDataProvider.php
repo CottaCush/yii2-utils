@@ -1,12 +1,12 @@
 <?php
 
-namespace app\libs;
+namespace CottaCush\Yii2\Data;
 
 use yii\data\ArrayDataProvider;
 
 /**
  * Class PaginatedDataProvider
- * @package app\libs
+ * @package CottaCush\Yii2\Data
  * @author Kehinde Ladipo <ladipokenny@gmail.com>
  */
 class PaginatedDataProvider extends ArrayDataProvider

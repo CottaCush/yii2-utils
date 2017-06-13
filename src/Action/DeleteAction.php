@@ -9,6 +9,12 @@ use CottaCush\Yii2\Controller\BaseController;
 use CottaCush\Yii2\Model\BaseModel;
 use yii\base\Action;
 
+/**
+ * Class DeleteAction
+ * @package CottaCush\Yii2\Action
+ * @author Adegoke Obasa <goke@cottacush.com>
+ * @codeCoverageIgnore
+ */
 class DeleteAction extends Action
 {
     public $returnUrl = '';

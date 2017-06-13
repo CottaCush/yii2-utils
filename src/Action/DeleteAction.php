@@ -6,12 +6,14 @@
 namespace CottaCush\Yii2\Action;
 
 use CottaCush\Yii2\Controller\BaseController;
+use CottaCush\Yii2\Model\BaseModel;
 use yii\base\Action;
 
 class DeleteAction extends Action
 {
     public $returnUrl = '';
     public $successMessage = '';
+    /** @var  BaseModel $model */
     public $model;
     public $deleteStatus;
 
@@ -26,14 +28,13 @@ class DeleteAction extends Action
 
         $referrerUrl = $controller->getRequest()->referrer;
         $controller->isPostCheck($referrerUrl);
-        $modelToDelete = $this->model;
 
-        if (!$modelToDelete) {
+        if (!$this->model) {
             $controller->flashError('Record not found');
         } else {
-            $modelToDelete->is_active = $this->deleteStatus;
-            if (!$modelToDelete->update()) {
-                $controller->flashError($modelToDelete->getErrors());
+            $this->model->is_active = $this->deleteStatus;
+            if (!$this->model->save()) {
+                $controller->flashError($this->model->getErrors());
             } else {
                 $controller->flashSuccess($this->successMessage);
             }

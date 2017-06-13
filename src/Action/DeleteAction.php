@@ -16,6 +16,7 @@ class DeleteAction extends Action
     /** @var  BaseModel $model */
     public $model;
     public $deleteStatus;
+    public $errorMessage = 'Record not found';
 
     /**
      * @author Akinwunmi Taiwo <taiwo@cottacush.com>
@@ -30,7 +31,7 @@ class DeleteAction extends Action
         $controller->isPostCheck($referrerUrl);
 
         if (!$this->model) {
-            $controller->flashError('Record not found');
+            $controller->flashError($this->errorMessage);
         } else {
             $this->model->is_active = $this->deleteStatus;
             if (!$this->model->save()) {

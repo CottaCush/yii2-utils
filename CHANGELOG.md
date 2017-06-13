@@ -1,5 +1,10 @@
 # Changelog
 
+#### 1.12.0
+
+* Add DeleteAction *2017-06-13*
+
+
 #### 1.11.0
 
 * Add more utility methods to BaseController *2017-06-12*

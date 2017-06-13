@@ -13,9 +13,7 @@ class DeleteAction extends Action
     public $returnUrl = '';
     public $successMessage = '';
     public $model;
-
-    const STATUS_ACTIVE = 1;
-    const STATUS_INACTIVE = 0;
+    public $deleteStatus;
 
     /**
      * @author Akinwunmi Taiwo <taiwo@cottacush.com>
@@ -33,7 +31,7 @@ class DeleteAction extends Action
         if (!$modelToDelete) {
             $controller->flashError('Record not found');
         } else {
-            $modelToDelete->is_active = self::STATUS_INACTIVE;
+            $modelToDelete->is_active = $this->deleteStatus;
             if (!$modelToDelete->update()) {
                 $controller->flashError($modelToDelete->getErrors());
             } else {

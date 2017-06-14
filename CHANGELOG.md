@@ -1,5 +1,10 @@
 # Changelog
 
+#### 1.16.0
+
+* Add word ellipsis method to Text Utils *2017-06-14*
+
+
 #### 1.15.0
 
 * Fix issue with filterParams method in TerraHttpClient to allow object and arrays *2017-06-14*

@@ -40,11 +40,8 @@ class SaveAction extends Action
         $model->load($postData);
 
         if (!$model->save()) {
-            $controller->flashError($model->getErrors());
-            return $controller->redirect($referrerUrl);
+            return $controller->returnError($model->getErrors());
         }
-
-        $controller->flashSuccess($this->successMessage);
-        return $controller->redirect($this->returnUrl);
+        return $controller->returnSuccess($this->successMessage);
     }
 }

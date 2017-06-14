@@ -1,5 +1,9 @@
 # Changelog
 
+#### 1.13.0
+
+* Add data paginator active provider *2017-06-14*
+
 #### 1.12.0
 
 * Add DeleteAction *2017-06-13*

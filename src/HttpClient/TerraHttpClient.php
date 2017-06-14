@@ -93,6 +93,8 @@ class TerraHttpClient extends BaseHttpClient
      */
     protected function filterParams($params)
     {
-        return array_filter($params, 'strlen');
+        return array_filter($params, function ($item) {
+            return is_array($item) || is_object($item) || strlen($item);
+        });
     }
 }

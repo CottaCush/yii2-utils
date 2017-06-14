@@ -1,5 +1,11 @@
 # Changelog
 
+#### 1.15.0
+
+* Fix issue with filterParams method in TerraHttpClient to allow object and arrays *2017-06-14*
+* Add Update Action *2017-06-14*
+
+
 #### 1.14.0
 
 * Add Save Action *2017-06-14*

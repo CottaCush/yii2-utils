@@ -10,6 +10,11 @@ use yii\base\Action;
 use yii\db\ActiveRecord;
 use yii\db\IntegrityException;
 
+/**
+ * Class UpdateAction
+ * @package CottaCush\Yii2\Action
+ * @author Adegoke Obasa <goke@cottacush.com>
+ */
 class UpdateAction extends Action
 {
     public $returnUrl = '';
@@ -21,6 +26,7 @@ class UpdateAction extends Action
     public $integrityExceptionMessage = 'Record cannot be updated as it is in use elsewhere';
 
     /**
+     * @author Adegoke Obasa <goke@cottacush.com>
      * @author Akinwunmi Taiwo <taiwo@cottacush.com>
      * @return \yii\web\Response
      */

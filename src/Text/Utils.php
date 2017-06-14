@@ -81,4 +81,22 @@ class Utils
         $class = trim("label label-$statusHyphenated $extraClasses");
         return Html::tag('span', $status, ['class' => $class]);
     }
+
+    /**
+     * Returns the max number of words followed by ellipsis if string has more words
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $string
+     * @param $maxNoOfWords
+     * @return string
+     */
+    public static function wordEllipsis($string, $maxNoOfWords)
+    {
+        $words = explode(' ', $string);
+        $numOfWords = count($words);
+        return sprintf(
+            "%s%s",
+            implode(' ', ($numOfWords > $maxNoOfWords) ? array_splice($words, 0, $maxNoOfWords) : $words),
+            ($numOfWords > $maxNoOfWords) ? "..." : ""
+        );
+    }
 }

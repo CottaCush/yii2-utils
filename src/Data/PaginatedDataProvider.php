@@ -8,6 +8,7 @@ use yii\data\ArrayDataProvider;
  * Class PaginatedDataProvider
  * @package CottaCush\Yii2\Data
  * @author Kehinde Ladipo <ladipokenny@gmail.com>
+ * @codeCoverageIgnore
  */
 class PaginatedDataProvider extends ArrayDataProvider
 {

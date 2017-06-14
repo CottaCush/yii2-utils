@@ -29,6 +29,8 @@ The following versions of PHP are supported by this version.
 
 * PHP 5.5
 * PHP 5.6
+* PHP 7.0
+* PHP 7.1
 
 ## Features 
 
@@ -37,6 +39,12 @@ The following are available:
 * HttpClient
 * Oauth2Client
 * HttpResponse
+* Date Utils
+* HttpResponse
+* Text Utils
+* BaseController
+* BaseModel
+* Actions
 
 ## Todo
 

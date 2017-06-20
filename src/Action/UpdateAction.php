@@ -47,11 +47,9 @@ class UpdateAction extends Action
             if (!$this->model->save()) {
                 return $controller->returnError($this->model->getErrors());
             }
-
         } catch (IntegrityException $ex) {
             return $controller->returnError($this->integrityExceptionMessage);
         }
         return $controller->returnSuccess($this->successMessage);
     }
 }
-

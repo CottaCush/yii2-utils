@@ -152,7 +152,6 @@ class BaseModel extends ActiveRecord
         $model = get_called_class();
         return $model::find()
             ->where([$activeColumn => $activeValue])
-            ->asArray()
             ->orderBy($orderBy);
     }
 

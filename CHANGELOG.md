@@ -1,5 +1,10 @@
 # Changelog
 
+#### 1.15.1
+
+* Fix issue with getActive and findActive in BaseModel
+
+
 #### 1.15.0
 
 * Fix issue with filterParams method in TerraHttpClient to allow object and arrays *2017-06-14*

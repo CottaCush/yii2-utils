@@ -127,30 +127,33 @@ class BaseModel extends ActiveRecord
      * Gets all active
      * @author Adegoke Obasa <goke@cottacush.com>
      * @author Olawale Lawal <wale@cottacush.com>
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
      * @param array $orderBy
-     * @return array|\yii\db\ActiveRecord[]
+     * @param string $activeColumn
+     * @param int $activeValue
+     * @return array|ActiveRecord[]
      */
-    public static function getActive($orderBy = [])
+    public static function getActive($orderBy = [], $activeColumn = 'is_active', $activeValue = 1)
     {
-        $model = get_called_class();
-        $model = new $model;
-        return self::find()
-            ->asArray()
-            ->orderBy($orderBy)
-            ->all();
+        return self::findActive($orderBy, $activeColumn, $activeValue)->all();
     }
 
     /**
      * Gets all active
      * @author Adeyemi Olaoye <yemi@cottacush.com>
-     * @return array|\yii\db\ActiveRecord[]
+     * @param array $orderBy
+     * @param string $activeColumn
+     * @param int $activeValue
+     * @return ActiveQuery
      */
-    public static function findActive()
+    public static function findActive($orderBy = [], $activeColumn = 'is_active', $activeValue = 1)
     {
+        /** @var self $model */
         $model = get_called_class();
-        $model = new $model;
-        return self::find()
-            ->all();
+        return $model::find()
+            ->where([$activeColumn => $activeValue])
+            ->asArray()
+            ->orderBy($orderBy);
     }
 
 
@@ -172,16 +175,22 @@ class BaseModel extends ActiveRecord
      * @author Olawale Lawal <wale@cottacush.com>
      * @param $startDate
      * @param $endDate
+     * @param string $createdAtColumn
      * @return array|ActiveQuery
      */
-    public static function getByCreatedDateRange($startDate, $endDate)
-    {
+    public static function getByCreatedDateRange(
+        $startDate,
+        $endDate,
+        $createdAtColumn = 'created_at'
+    ) {
         $model = get_called_class();
         $model = new $model;
 
         return self::find()
-            ->andWhere($model::tableName() . '.created_at BETWEEN :start_date AND :end_date')
-            ->params(['start_date' => $startDate, 'end_date' => $endDate]);
+            ->andWhere(
+                $model::tableName() . '.' . $createdAtColumn . ' BETWEEN :start_date AND :end_date',
+                ['start_date' => $startDate, 'end_date' => $endDate]
+            );
     }
 
 

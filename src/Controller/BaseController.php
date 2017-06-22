@@ -22,6 +22,9 @@ class BaseController extends Controller
      */
     protected $httpStatuses;
 
+    const FLASH_SUCCESS_KEY = 'success';
+    const FLASH_ERROR_KEY = 'error';
+
     public function init()
     {
         parent::init();
@@ -135,13 +138,7 @@ class BaseController extends Controller
      */
     public function flashError($messages)
     {
-        if (is_array($messages)) {
-            foreach ($messages as $message) {
-                Yii::$app->session->addFlash('error', $message);
-            }
-        } else {
-            \Yii::$app->session->setFlash('error', $messages);
-        }
+        $this->flash(self::FLASH_ERROR_KEY, $messages);
     }
 
     /**
@@ -152,12 +149,22 @@ class BaseController extends Controller
      */
     public function flashSuccess($messages)
     {
+        $this->flash(self::FLASH_SUCCESS_KEY, $messages);
+    }
+
+    /**
+     * @author Olawale Lawal <wale@cottacush.com>
+     * @param $key
+     * @param $messages
+     */
+    protected function flash($key, $messages)
+    {
         if (is_array($messages)) {
             foreach ($messages as $message) {
-                Yii::$app->session->addFlash('success', $message);
+                Yii::$app->session->addFlash($key, $message);
             }
         } else {
-            \Yii::$app->session->setFlash('success', $messages);
+            \Yii::$app->session->setFlash($key, $messages);
         }
     }
 

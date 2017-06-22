@@ -22,6 +22,9 @@ class BaseController extends Controller
      */
     protected $httpStatuses;
 
+    const FLASH_SUCCESS_KEY = 'success';
+    const FLASH_ERROR_KEY = 'error';
+
     public function init()
     {
         parent::init();
@@ -130,21 +133,39 @@ class BaseController extends Controller
     /**
      * This flashes error message and sends to the view
      * @author Adegoke Obasa <goke@cottacush.com>
-     * @param $message
+     * @author Olawale Lawal <wale@cottacush.com>
+     * @param $messages
      */
-    public function flashError($message)
+    public function flashError($messages)
     {
-        \Yii::$app->session->setFlash('error', $message);
+        $this->flash(self::FLASH_ERROR_KEY, $messages);
     }
 
     /**
      * This flashes success message and sends to the view
      * @author Adegoke Obasa <goke@cottacush.com>
-     * @param $message
+     * @author Olawale Lawal <wale@cottacush.com>
+     * @param $messages
      */
-    public function flashSuccess($message)
+    public function flashSuccess($messages)
     {
-        \Yii::$app->session->setFlash('success', $message);
+        $this->flash(self::FLASH_SUCCESS_KEY, $messages);
+    }
+
+    /**
+     * @author Olawale Lawal <wale@cottacush.com>
+     * @param $key
+     * @param $messages
+     */
+    protected function flash($key, $messages)
+    {
+        if (is_array($messages)) {
+            foreach ($messages as $message) {
+                Yii::$app->session->addFlash($key, $message);
+            }
+        } else {
+            \Yii::$app->session->setFlash($key, $messages);
+        }
     }
 
     /**

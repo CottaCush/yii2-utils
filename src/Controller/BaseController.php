@@ -130,21 +130,35 @@ class BaseController extends Controller
     /**
      * This flashes error message and sends to the view
      * @author Adegoke Obasa <goke@cottacush.com>
-     * @param $message
+     * @author Olawale Lawal <wale@cottacush.com>
+     * @param $messages
      */
-    public function flashError($message)
+    public function flashError($messages)
     {
-        \Yii::$app->session->setFlash('error', $message);
+        if (is_array($messages)) {
+            foreach ($messages as $message) {
+                Yii::$app->session->addFlash('error', $message);
+            }
+        } else {
+            \Yii::$app->session->setFlash('error', $messages);
+        }
     }
 
     /**
      * This flashes success message and sends to the view
      * @author Adegoke Obasa <goke@cottacush.com>
-     * @param $message
+     * @author Olawale Lawal <wale@cottacush.com>
+     * @param $messages
      */
-    public function flashSuccess($message)
+    public function flashSuccess($messages)
     {
-        \Yii::$app->session->setFlash('success', $message);
+        if (is_array($messages)) {
+            foreach ($messages as $message) {
+                Yii::$app->session->addFlash('success', $message);
+            }
+        } else {
+            \Yii::$app->session->setFlash('success', $messages);
+        }
     }
 
     /**

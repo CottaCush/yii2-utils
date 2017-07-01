@@ -284,13 +284,7 @@ class BaseController extends Controller
         $this->sendTerminalResponse($redirectUrl);
     }
 
-
-    /**
-     * @author Adeyemi Olaoye <yemi@cottacush.com>
-     * @param \yii\base\Action $action
-     * @return bool
-     */
-    public function beforeAction($action)
+    public function loginRequireBeforeAction()
     {
         $excludedPaths = ArrayHelper::getValue(\Yii::$app->params, 'excludedPaths', []);
 

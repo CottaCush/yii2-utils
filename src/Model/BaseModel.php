@@ -246,4 +246,32 @@ class BaseModel extends ActiveRecord
         }
         return true;
     }
+
+    /**
+     * Fetch dropdown data for model
+     *
+     * Usage
+     *<code>
+     *  // with default
+     *  FormCategory::getDropdownMap('key', 'name', ['' => 'Select Category'])
+     *
+     *  // without default
+     *  FormCategory::getDropdownMap('key', 'name')
+     *</code>
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param $keyAttribute
+     * @param $valueAttribute
+     * @param array $default
+     * an array map of the value to the labels
+     * @return array
+     */
+    public static function getDropdownMap($keyAttribute, $valueAttribute, array $default = [])
+    {
+        $map = ArrayHelper::map(self::getActive(), $keyAttribute, $valueAttribute);
+        if ($default) {
+            $map = array_merge($default, $map);
+        }
+
+        return $map;
+    }
 }

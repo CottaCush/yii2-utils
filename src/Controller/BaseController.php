@@ -356,10 +356,21 @@ class BaseController extends Controller
      * @author Adeyemi Olaoye <yemi@cottacush.com>
      * @param $widget
      * @param $config
+     * @param null $redirectToOnFail URL to redirect to on fail or if request is not an ajax request
      * @return string
      */
-    public function renderWidgetAsAjax($widget, $config)
+    public function renderWidgetAsAjax($widget, $config, $redirectToOnFail = null)
     {
+        $referrer = $this->redirect($this->getRequest()->getReferrer()) ?: Yii::$app->homeUrl;
+
+        if (!$this->getRequest()->isAjax) {
+            if (is_null($redirectToOnFail)) {
+                return $referrer;
+            } else {
+                return $this->redirect($redirectToOnFail);
+            }
+        }
+
         ob_start();
         ob_implicit_flush(false);
 

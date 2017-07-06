@@ -1,5 +1,9 @@
 # Changelog
 
+#### 1.16.1
+
+* Fix redirect issue on render widget as ajax
+
 #### 1.16.0
 
 * Allow redirect to URL if request is not ajax in `CottaCush\Yii2\Controller:renderWidgetAsAjax`

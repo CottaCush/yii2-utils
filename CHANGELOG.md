@@ -1,7 +1,9 @@
 # Changelog
 
-#### 1.16.1
+#### 2.0.0
 
+* Remove `beforeAction` and create `loginRequiredBeforeAction` in BaseController *2017-07-06*
+* Add `redirectUrl` to `returnError` and `returnSuccess` methods in BaseController *2017-07-06*
 * Fix redirect issue on render widget as ajax
 
 #### 1.16.0

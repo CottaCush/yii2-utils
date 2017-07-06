@@ -50,6 +50,6 @@ class UpdateAction extends Action
         } catch (IntegrityException $ex) {
             return $controller->returnError($this->integrityExceptionMessage);
         }
-        return $controller->returnSuccess($this->successMessage);
+        return $controller->returnSuccess($this->successMessage, $this->returnUrl);
     }
 }

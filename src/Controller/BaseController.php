@@ -340,7 +340,7 @@ class BaseController extends Controller
      */
     public function renderWidgetAsAjax($widget, $config, $redirectToOnFail = null)
     {
-        $referrer = $this->redirect($this->getRequest()->getReferrer()) ?: Yii::$app->homeUrl;
+        $referrer = $this->getRequest()->getReferrer() ?: Yii::$app->homeUrl;
 
         if (!$this->getRequest()->isAjax) {
             if (is_null($redirectToOnFail)) {

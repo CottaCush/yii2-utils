@@ -306,23 +306,31 @@ class BaseController extends Controller
     /**
      * @author Adeyemi Olaoye <yemi@cottacush.com>
      * @param $message
-     * @return \yii\web\Response
+     * @param null $redirectUrl
+     * @return Response
      */
-    public function returnError($message)
+    public function returnError($message, $redirectUrl = null)
     {
         $this->flashError($message);
-        return $this->redirect($this->getRequest()->getReferrer());
+        if (is_null($redirectUrl)) {
+            $redirectUrl = $this->getRequest()->getReferrer();
+        }
+        return $this->redirect($redirectUrl);
     }
 
     /**
      * @author Adeyemi Olaoye <yemi@cottacush.com>
      * @param $message
-     * @return \yii\web\Response
+     * @param null $redirectUrl
+     * @return Response
      */
-    public function returnSuccess($message)
+    public function returnSuccess($message, $redirectUrl = null)
     {
         $this->flashSuccess($message);
-        return $this->redirect($this->getRequest()->getReferrer());
+        if (is_null($redirectUrl)) {
+            $redirectUrl = $this->getRequest()->getReferrer();
+        }
+        return $this->redirect($redirectUrl);
     }
 
     /**

@@ -42,6 +42,6 @@ class SaveAction extends Action
         if (!$model->save()) {
             return $controller->returnError($model->getErrors());
         }
-        return $controller->returnSuccess($this->successMessage);
+        return $controller->returnSuccess($this->successMessage, $this->returnUrl);
     }
 }

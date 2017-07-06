@@ -1,5 +1,18 @@
 # Changelog
 
+#### 1.16.1
+
+* Fix redirect issue on render widget as ajax
+
+#### 1.16.0
+
+* Allow redirect to URL if request is not ajax in `CottaCush\Yii2\Controller:renderWidgetAsAjax`
+
+#### 1.15.1
+
+* Fix issue with getActive and findActive in BaseModel
+
+
 #### 1.15.0
 
 * Fix issue with filterParams method in TerraHttpClient to allow object and arrays *2017-06-14*

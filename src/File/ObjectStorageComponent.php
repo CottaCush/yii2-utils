@@ -17,17 +17,17 @@ class ObjectStorageComponent extends Component
     /** @var  ObjectStorageClientInterface */
     protected $objectStorageClient;
 
-    public $objectStorageClass;
+    public $objectStorageClientClass;
 
     public function init()
     {
-        if (!($this->objectStorageClass instanceof ObjectStorageClientInterface)) {
+        $this->objectStorageClient = new $this->objectStorageClientClass();
+
+        if (!($this->objectStorageClient instanceof ObjectStorageClientInterface)) {
             throw new InvalidConfigException(
                 'Object Storage Class must be an instance of ' . ObjectStorageClientInterface::class
             );
         }
-
-        $this->objectStorageClient = new $this->objectStorageClass();
     }
 
     /**

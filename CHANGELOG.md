@@ -1,5 +1,9 @@
 # Changelog
 
+#### 2.0.1
+* Rename flash messages JavaScript variable in BaseController *2017-09-18*
+
+
 #### 2.0.0
 
 * Remove `beforeAction` and create `loginRequiredBeforeAction` in BaseController *2017-07-06*

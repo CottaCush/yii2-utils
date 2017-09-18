@@ -239,7 +239,7 @@ class BaseController extends Controller
             ];
         }
         $this->getSession()->removeAllFlashes();
-        return Html::script('var Notifications =' . json_encode($flashMessages));
+        return Html::script('var notifications =' . json_encode($flashMessages));
     }
 
     /**

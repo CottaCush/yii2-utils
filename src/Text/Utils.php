@@ -81,4 +81,24 @@ class Utils
         $class = trim("label label-$statusHyphenated $extraClasses");
         return Html::tag('span', $status, ['class' => $class]);
     }
+
+    /**
+     * Returns the international format of the given number
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param $countryCode
+     * @param $number
+     * @param $numberLength
+     * @return string
+     */
+    public static function formatPhoneNumberToInternationalFormat($countryCode, $number, $numberLength)
+    {
+        $actualNumber = substr($number, -($numberLength), $numberLength);
+
+        if (!$actualNumber) {
+            return $number;
+        }
+
+        return '+' . $countryCode . $actualNumber;
+
+    }
 }

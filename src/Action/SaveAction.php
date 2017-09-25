@@ -19,6 +19,7 @@ class SaveAction extends Action
     public $returnUrl = '';
     public $successMessage = '';
     public $model;
+    public $postData;
 
     /**
      * @author Adegoke Obasa <goke@cottacush.com>
@@ -33,11 +34,13 @@ class SaveAction extends Action
         $referrerUrl = $controller->getRequest()->referrer;
         $controller->isPostCheck($referrerUrl);
 
-        $postData = $controller->getRequest()->post();
+        if (is_null($this->postData)) {
+            $this->postData = $controller->getRequest()->post();
+        }
 
         $model = new  $this->model;
         /** @var  BaseModel $model */
-        $model->load($postData);
+        $model->load($this->postData);
 
         if (!$model->save()) {
             return $controller->returnError($model->getErrors());

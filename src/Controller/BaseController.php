@@ -248,7 +248,7 @@ class BaseController extends Controller
      * @param $messageArray
      * @return string
      */
-    private function mergeFlashMessages($messageArray)
+    protected function mergeFlashMessages($messageArray)
     {
         $messages = array_values($messageArray);
         $flashMessage = '';

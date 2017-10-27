@@ -1,11 +1,15 @@
 # Changelog
 
+#### 2.0.3
+* Implement login check before executing actions                *2017-10-27*
+* Modify `getStatusHtml` to allow `tag` and `baseClass` params
+
 #### 2.0.2
-Add function to format number to international format *2017-09-22*
+Add function to format number to international format           *2017-09-22*
 Allow for `postData` to be overridden from the calling function
 
 #### 2.0.1
-* Rename flash messages JavaScript variable in BaseController *2017-09-18*
+* Rename flash messages JavaScript variable in BaseController   *2017-09-18*
 
 
 #### 2.0.0

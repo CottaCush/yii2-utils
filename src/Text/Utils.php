@@ -70,16 +70,19 @@ class Utils
     /**
      * Returns the styled label for the status
      * @author Olajide Oye <jide@cottacush.com>
+     * @author Olawale Lawal <wale@cottacush.com>
      * @param $status
      * @param string $extraClasses
+     * @param string $baseClass
+     * @param string $tag
      * @return string
      */
-    public static function getStatusHtml($status, $extraClasses = '')
+    public static function getStatusHtml($status, $extraClasses = '', $baseClass = 'label', $tag ='span')
     {
         $status = strtolower($status);
         $statusHyphenated = implode('-', explode(' ', $status));
-        $class = trim("label label-$statusHyphenated $extraClasses");
-        return Html::tag('span', $status, ['class' => $class]);
+        $class = trim("{$baseClass} {$baseClass}-$statusHyphenated $extraClasses");
+        return Html::tag($tag, $status, ['class' => $class]);
     }
 
     /**
@@ -99,6 +102,5 @@ class Utils
         }
 
         return '+' . $countryCode . $actualNumber;
-
     }
 }

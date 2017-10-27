@@ -6,8 +6,6 @@
 namespace CottaCush\Yii2\Action;
 
 use CottaCush\Yii2\Controller\BaseController;
-use CottaCush\Yii2\Model\BaseModel;
-use yii\base\Action;
 
 /**
  * Class DeleteAction
@@ -15,12 +13,9 @@ use yii\base\Action;
  * @author Adegoke Obasa <goke@cottacush.com>
  * @codeCoverageIgnore
  */
-class DeleteAction extends Action
+class DeleteAction extends BaseAction
 {
-    public $returnUrl = '';
-    public $successMessage = '';
-    /** @var  BaseModel $model */
-    public $model;
+    public $deleteAttribute = 'is_active';
     public $deleteStatus;
     public $errorMessage = 'Record not found';
 
@@ -40,7 +35,7 @@ class DeleteAction extends Action
         if (!$this->model) {
             $controller->flashError($this->errorMessage);
         } else {
-            $this->model->is_active = $this->deleteStatus;
+            $this->model->{$this->deleteAttribute} = $this->deleteStatus;
             if (!$this->model->save()) {
                 $controller->flashError($this->model->getErrors());
             } else {

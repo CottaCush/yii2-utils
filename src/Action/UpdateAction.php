@@ -6,8 +6,6 @@
 namespace CottaCush\Yii2\Action;
 
 use CottaCush\Yii2\Controller\BaseController;
-use yii\base\Action;
-use yii\db\ActiveRecord;
 use yii\db\IntegrityException;
 
 /**
@@ -15,14 +13,9 @@ use yii\db\IntegrityException;
  * @package CottaCush\Yii2\Action
  * @author Adegoke Obasa <goke@cottacush.com>
  */
-class UpdateAction extends Action
+class UpdateAction extends BaseAction
 {
-    public $returnUrl = '';
-    public $successMessage = '';
     public $notFoundMessage = 'Record not found';
-    /** @var ActiveRecord $model */
-    public $model;
-    public $postData;
     public $integrityExceptionMessage = 'Record cannot be updated as it is in use elsewhere';
 
     /**

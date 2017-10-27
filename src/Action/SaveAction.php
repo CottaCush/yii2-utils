@@ -7,20 +7,14 @@ namespace CottaCush\Yii2\Action;
 
 use CottaCush\Yii2\Controller\BaseController;
 use CottaCush\Yii2\Model\BaseModel;
-use yii\base\Action;
 
 /**
  * Class SaveAction
  * @package app\actions
  * @author Adegoke Obasa <goke@cottacush.com>
  */
-class SaveAction extends Action
+class SaveAction extends BaseAction
 {
-    public $returnUrl = '';
-    public $successMessage = '';
-    public $model;
-    public $postData;
-
     /**
      * @author Adegoke Obasa <goke@cottacush.com>
      * @author Akinwunmi Taiwo <taiwo@cottacush.com>
@@ -38,8 +32,8 @@ class SaveAction extends Action
             $this->postData = $controller->getRequest()->post();
         }
 
-        $model = new  $this->model;
-        /** @var  BaseModel $model */
+        /** @var BaseModel $model */
+        $model = new $this->model;
         $model->load($this->postData);
 
         if (!$model->save()) {

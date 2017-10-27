@@ -16,7 +16,7 @@ use CottaCush\Yii2\Controller\BaseController;
 class DeleteAction extends BaseAction
 {
     public $deleteAttribute = 'is_active';
-    public $deleteStatus;
+    public $deleteStatus = 0;
     public $errorMessage = 'Record not found';
 
     /**

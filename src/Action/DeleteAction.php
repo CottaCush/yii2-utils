@@ -19,6 +19,9 @@ class DeleteAction extends BaseAction
     public $deleteStatus = 0;
     public $errorMessage = 'Record not found';
 
+    public $extraFields = null;
+    public $formName = '';
+
     /**
      * @author Adegoke Obasa <goke@cottacush.com>
      * @author Akinwunmi Taiwo <taiwo@cottacush.com>
@@ -33,16 +36,18 @@ class DeleteAction extends BaseAction
         $controller->isPostCheck($referrerUrl);
 
         if (!$this->model) {
-            $controller->flashError($this->errorMessage);
-        } else {
-            $this->model->{$this->deleteAttribute} = $this->deleteStatus;
-            if (!$this->model->save()) {
-                $controller->flashError($this->model->getErrors());
-            } else {
-                $controller->flashSuccess($this->successMessage);
-            }
+            return $controller->returnError($this->errorMessage, $this->returnUrl);
         }
 
-        return $controller->redirect($this->returnUrl);
+        $this->model->{$this->deleteAttribute} = $this->deleteStatus;
+        if ($this->extraFields) {
+            $this->model->load($this->extraFields,$this->formName);
+        }
+
+        if (!$this->model->save()) {
+            return $controller->returnError($this->model->getErrors(), $this->returnUrl);
+        }
+
+        return $controller->returnSuccess($this->successMessage, $this->returnUrl);
     }
 }

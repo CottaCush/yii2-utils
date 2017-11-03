@@ -151,7 +151,7 @@ class BaseModel extends ActiveRecord
         /** @var self $model */
         $model = get_called_class();
         return $model::find()
-            ->where([$activeColumn => $activeValue])
+            ->where([$model::tableName() . '.' . $activeColumn => $activeValue])
             ->orderBy($orderBy);
     }
 
@@ -181,7 +181,8 @@ class BaseModel extends ActiveRecord
         $startDate,
         $endDate,
         $createdAtColumn = 'created_at'
-    ) {
+    )
+    {
         $model = get_called_class();
         $model = new $model;
 

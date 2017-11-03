@@ -41,7 +41,7 @@ class DeleteAction extends BaseAction
 
         $this->model->{$this->deleteAttribute} = $this->deleteStatus;
         if ($this->extraFields) {
-            $this->model->load($this->extraFields,$this->formName);
+            $this->model->load($this->extraFields, $this->formName);
         }
 
         if (!$this->model->save()) {

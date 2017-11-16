@@ -1,5 +1,9 @@
 # Changelog
 
+#### 2.1.0
+* Add functions to handle permissions                *2017-11-16*
+* Add function to set session variable and redirect
+
 #### 2.0.3
 * Implement login check before executing actions                *2017-10-27*
 * Modify `getStatusHtml` to allow `tag` and `baseClass` params

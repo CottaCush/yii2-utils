@@ -401,8 +401,8 @@ class BaseController extends Controller
     }
 
     /**
+     * Get Permission Based Access Manager Configuration
      * @author Taiwo Ladipo <ladipotaiwo01@gmail.com>
-     * Get Permission Based Access Manager
      * @return mixed
      */
     public function getPermissionManager()
@@ -411,6 +411,7 @@ class BaseController extends Controller
     }
 
     /**
+     * Handle access based on permissions
      * @author Taiwo Ladipo <ladipotaiwo01@gmail.com>
      * @param $permissionKeys
      * @param bool $redirect

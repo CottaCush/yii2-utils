@@ -385,4 +385,75 @@ class BaseController extends Controller
 
         return ob_get_clean();
     }
+
+    /**
+     * Sets a session variable and redirects to the URL
+     * @author Taiwo Ladipo <ladipotaiwo01@gmail.com>
+     * @param $key
+     * @param $value
+     * @param $redirectUrl
+     * @return \yii\web\Response
+     */
+    public function setSessionAndRedirect($key, $value, $redirectUrl)
+    {
+        $this->getSession()->set($key, $value);
+        return $this->redirect($redirectUrl);
+    }
+
+    /**
+     * Get Permission Based Access Manager Configuration
+     * @author Taiwo Ladipo <ladipotaiwo01@gmail.com>
+     * @return mixed
+     */
+    public function getPermissionManager()
+    {
+        return Yii::$app->permissionManager;
+    }
+
+    /**
+     * Handle access based on permissions
+     * @author Taiwo Ladipo <ladipotaiwo01@gmail.com>
+     * @param $permissionKeys
+     * @param bool $redirect
+     * @param $fullAccessKey
+     * @param $errorMsg
+     * @param $defaultUrl
+     * @return bool|Response
+     * @throws \yii\base\ExitException
+     * @throws \yii\web\ForbiddenHttpException
+     */
+    public function canAccess($permissionKeys, $fullAccessKey, $errorMsg, $defaultUrl, $redirect = false)
+    {
+        if ($this->getUser()->isGuest) {
+            return $this->getUser()->loginRequired();
+        }
+
+        if ($this->getPermissionManager()->canAccess($fullAccessKey)) {
+            return true;
+        }
+
+        if (!is_array($permissionKeys)) {
+            $permissionKeys = [$permissionKeys];
+        }
+
+        foreach ($permissionKeys as $permissionKey) {
+            if ($this->getPermissionManager()->canAccess($permissionKey)) {
+                return true;
+            }
+        }
+
+        if ($redirect) {
+            $this->flashError($errorMsg);
+
+            $request = $this->getRequest();
+            $referrerUrl = $request->referrer;
+
+            $redirectUrl = ($referrerUrl == $request->url || is_null($referrerUrl)) ?
+                $defaultUrl : $referrerUrl;
+
+            $this->redirect($redirectUrl)->send();
+            Yii::$app->end(); //this enforces the redirect
+        }
+        return false;
+    }
 }

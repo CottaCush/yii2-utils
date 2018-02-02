@@ -181,8 +181,7 @@ class BaseModel extends ActiveRecord
         $startDate,
         $endDate,
         $createdAtColumn = 'created_at'
-    )
-    {
+    ) {
         $model = get_called_class();
         $model = new $model;
 

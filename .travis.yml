@@ -29,10 +29,11 @@ matrix:
 
 before_script:
   - travis_retry composer self-update
+  - travis_retry composer config --global github-oauth.github.com "$GITHUB_TOKEN"
   - travis_retry composer global require "fxp/composer-asset-plugin:~1.1.3"
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
   - travis_retry composer install --no-interaction
-  - travis_retry composer require satooshi/php-coveralls:~0.6@stable
+  - travis_retry composer require php-coveralls/php-coveralls:~2.0
 
 script:
   - vendor/bin/phpcs --standard=psr2 src/

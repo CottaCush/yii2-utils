@@ -14,6 +14,9 @@ class BaseAction extends Action
 
     public $postData;
     public $returnUrl = '';
+
+    public $recordNotFound = 'Record not found';
+    public $errorMessage = '';
     public $successMessage = '';
 
     /** @var bool Checks if the login is required before action is executed */
@@ -40,5 +43,20 @@ class BaseAction extends Action
         }
 
         return true;
+    }
+
+    /**
+     * Process message that contains callback
+     * @author Olawale Lawal <wale@cottacush.com>
+     * @param $message
+     */
+    protected function processMessage(&$message)
+    {
+        if (!$message instanceof \Closure) {
+            return;
+        }
+
+        $callback = $message;
+        $message = $callback($this->model);
     }
 }

@@ -77,7 +77,7 @@ class Utils
      * @param string $tag
      * @return string
      */
-    public static function getStatusHtml($status, $extraClasses = '', $baseClass = 'label', $tag ='span')
+    public static function getStatusHtml($status, $extraClasses = '', $baseClass = 'label', $tag = 'span')
     {
         $status = strtolower($status);
         $statusHyphenated = implode('-', explode(' ', $status));
@@ -102,5 +102,40 @@ class Utils
         }
 
         return '+' . $countryCode . $actualNumber;
+    }
+
+    /**
+     * @author Olawale Lawal <wale@cottacush.com>
+     * @param array $base
+     * @param array $challenger
+     * @return bool
+     */
+    public static function isArrayDifferent($base, $challenger)
+    {
+        return count($base) != count($challenger) || array_diff($challenger, $base);
+    }
+
+    /**
+     * @author Olawale Lawal <wale@cottacush.com>
+     * @param array $array
+     * @return array
+     */
+    public static function flattenArray($array)
+    {
+        $result = array();
+
+        if (!is_array($array)) {
+            $array = func_get_args();
+        }
+
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
+                $result = array_merge($result, self::flattenArray($value));
+            } else {
+                $result = array_merge($result, array($key => $value));
+            }
+        }
+
+        return $result;
     }
 }

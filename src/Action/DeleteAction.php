@@ -39,6 +39,9 @@ class DeleteAction extends BaseAction
             return $controller->returnError($this->errorMessage, $this->returnUrl);
         }
 
+        $this->processMessage($this->errorMessage);
+        $this->processMessage($this->successMessage);
+
         $this->model->{$this->deleteAttribute} = $this->deleteStatus;
         if ($this->extraFields) {
             $this->model->load($this->extraFields, $this->formName);

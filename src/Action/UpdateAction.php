@@ -37,6 +37,9 @@ class UpdateAction extends BaseAction
             }
             $this->model->load($this->postData);
 
+            $this->processMessage($this->successMessage);
+            $this->processMessage($this->integrityExceptionMessage);
+
             if (!$this->model->save()) {
                 return $controller->returnError($this->model->getErrors());
             }

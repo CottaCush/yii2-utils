@@ -77,7 +77,7 @@ class Utils
      * @param string $tag
      * @return string
      */
-    public static function getStatusHtml($status, $extraClasses = '', $baseClass = 'label', $tag ='span')
+    public static function getStatusHtml($status, $extraClasses = '', $baseClass = 'label', $tag = 'span')
     {
         $status = strtolower($status);
         $statusHyphenated = implode('-', explode(' ', $status));

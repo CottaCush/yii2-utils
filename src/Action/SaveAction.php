@@ -7,6 +7,8 @@ namespace CottaCush\Yii2\Action;
 
 use CottaCush\Yii2\Controller\BaseController;
 use CottaCush\Yii2\Model\BaseModel;
+use yii\helpers\Json;
+use yii\widgets\ActiveForm;
 
 /**
  * Class SaveAction
@@ -15,6 +17,8 @@ use CottaCush\Yii2\Model\BaseModel;
  */
 class SaveAction extends BaseAction
 {
+    public $enableAjaxValidation = false;
+
     /**
      * @author Adegoke Obasa <goke@cottacush.com>
      * @author Akinwunmi Taiwo <taiwo@cottacush.com>
@@ -35,6 +39,10 @@ class SaveAction extends BaseAction
         /** @var BaseModel $model */
         $model = new $this->model;
         $model->load($this->postData);
+
+        if (\Yii::$app->request->isAjax && $this->enableAjaxValidation) {
+            return Json::encode(ActiveForm::validate($model));
+        }
 
         if (!$model->save()) {
             return $controller->returnError($model->getErrors());

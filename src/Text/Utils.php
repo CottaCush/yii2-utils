@@ -2,6 +2,7 @@
 
 namespace CottaCush\Yii2\Text;
 
+use CottaCush\Yii2\Template\HandlebarsTemplatingEngine;
 use Hashids\Hashids;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
@@ -46,6 +47,7 @@ class Utils
      * @param $salt
      * @param int $hashLength
      * @return string
+     * @throws \Exception
      */
     public static function encodeId($id, $salt, $hashLength = self::MIN_HASH_LENGTH)
     {
@@ -60,6 +62,7 @@ class Utils
      * @param $salt
      * @param int $hashLength
      * @return int
+     * @throws \Exception
      */
     public static function decodeId($hash, $salt, $hashLength = self::MIN_HASH_LENGTH)
     {
@@ -137,5 +140,30 @@ class Utils
         }
 
         return $result;
+    }
+
+    /**
+     * @param $amount
+     * @return string
+     */
+    public static function formatToNaira($amount)
+    {
+        if (is_null($amount) || !is_numeric($amount)) {
+            return $amount;
+        }
+
+        return number_format($amount, 2) . 'NGN';
+    }
+
+    /**
+     * @author Kehinde Ladipo <kehinde.ladipo@cottacush.com>
+     * @param $template
+     * @param array $params
+     * @return string
+     */
+    public static function getActualMessage($template, array $params)
+    {
+        $engine = new HandlebarsTemplatingEngine();
+        return $engine->renderTemplate($template, $params);
     }
 }

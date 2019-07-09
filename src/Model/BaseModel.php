@@ -274,4 +274,42 @@ class BaseModel extends ActiveRecord
 
         return $map;
     }
+
+    /**
+     * @author Olawale Lawal <wale@cottacush.com>
+     * @param $table
+     * @param $columns
+     * @param $rows
+     * @return int
+     * @throws \yii\db\Exception
+     */
+    public static function batchInsert($table, $columns, $rows)
+    {
+        $db = self::getDb();
+
+        if (is_null($table)) {
+            /** @var BaseModel $model */
+            $model = get_called_class();
+            $table = $model::tableName();
+        }
+
+        return $db->createCommand()->batchInsert($table, $columns, $rows)->execute();
+    }
+
+    /**
+     * @author Olawale Lawal <wale@cottacush.com>
+     * @param $id
+     * @param $relatedRecords
+     * @param string $column
+     * @return array|BaseModel|null|ActiveRecord
+     */
+    public static function fetchWithRelatedRecords($id, $relatedRecords, $column = 'id')
+    {
+        /** @var BaseModel $model */
+        $model = get_called_class();
+        $model = $model::find()->where([$model::tableName() . '.' . $column => $id])
+            ->joinWith($relatedRecords)->limit(1)->one();
+
+        return $model;
+    }
 }

@@ -2,6 +2,11 @@
 
 namespace CottaCush\Yii2\Controller;
 
+use CottaCush\Yii2\Action\SaveAction;
+use CottaCush\Yii2\Action\SoftDeleteAction;
+use CottaCush\Yii2\Action\UpdateAction;
+use CottaCush\Yii2\Constants\Messages;
+use CottaCush\Yii2\Model\BaseModel;
 use Lukasoppermann\Httpstatus\Httpstatus;
 use Yii;
 use yii\helpers\ArrayHelper;
@@ -17,6 +22,13 @@ use yii\web\Response;
  */
 class BaseController extends Controller
 {
+    const ACTION_ACTIVATE = 'activate';
+    const ACTION_DEACTIVATE = 'deactivate';
+
+    const ACTION_CREATE = 'create';
+    const ACTION_DELETE = 'delete';
+    const ACTION_UPDATE = 'update';
+
     /**
      * @var Httpstatus $httpStatuses
      */
@@ -455,5 +467,83 @@ class BaseController extends Controller
             Yii::$app->end(); //this enforces the redirect
         }
         return false;
+    }
+
+    /**
+     * @author Olawale Lawal <wale@cottacush.com>
+     * @param $model
+     * @param $entityName
+     * @param $actions
+     * @param $returnUrl
+     * @param $formName
+     * @return array
+     */
+    public function generateLOVActions($model, $entityName, $actions, $returnUrl, $formName = null)
+    {
+        $generatedActions = [];
+        $postData = $this->getRequest()->post();
+        /** @var BaseModel $modelObj */
+        $modelObj = new $model;
+        $formName = $formName ?: $modelObj->formName();
+
+        foreach ($actions as $action) {
+            $url = ArrayHelper::getValue($action, 'url', false);
+            $type = ArrayHelper::getValue($action, 'type', false);
+
+            if (!$url || !$type) {
+                continue;
+            }
+
+            $extraModelData = ArrayHelper::getValue($action, 'extraModelData', []);
+
+            switch ($type) {
+                case self::ACTION_CREATE:
+                    $task = ArrayHelper::getValue($action, 'task', Messages::TASK_ADD);
+                    $class = SaveAction::class;
+
+                    $generatedActions[$url] = [
+                        'class' => $class,
+                        'returnUrl' => $returnUrl,
+                        'model' => $model,
+                        'enableAjax' => ArrayHelper::getValue($action, 'enableAjaxValidation', false),
+                        'postData' => array_merge_recursive($postData, [$formName => $extraModelData]),
+                        'successMessage' => Messages::getSuccessMessage($entityName, $task),
+                    ];
+                    break;
+
+                case self::ACTION_UPDATE:
+                    $task = ArrayHelper::getValue($action, 'task', Messages::TASK_UPDATE);
+
+                    $generatedActions[$url] = [
+                        'class' => UpdateAction::class,
+                        'returnUrl' => $returnUrl,
+                        'model' => $modelObj::findOne(ArrayHelper::getValue($postData, $formName . '.id')),
+                        'postData' => array_merge_recursive($postData, [$formName => $extraModelData]),
+                        'successMessage' => Messages::getSuccessMessage($entityName, $task)
+                    ];
+                    break;
+
+                case self::ACTION_DELETE:
+                    $task = ArrayHelper::getValue($action, 'task', Messages::TASK_DELETE);
+
+                    $generatedActions[$url] = [
+                        'class' => SoftDeleteAction::class,
+                        'returnUrl' => $returnUrl,
+                        'model' => $model,
+                        'modelId' => ArrayHelper::getValue($postData, 'id'),
+                        'successMessage' => Messages::getSuccessMessage($entityName, $task),
+                        'fieldToModify' => ArrayHelper::getValue($action, 'fieldToModify'),
+                        'extraFields' => $extraModelData,
+                        'relatedRecords' => ArrayHelper::getValue($action, 'relatedRecords', []),
+                        'integrityViolationMessage' => Messages::getIntegrityViolationMsg($entityName, $task)
+                    ];
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        return $generatedActions;
     }
 }

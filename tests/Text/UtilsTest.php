@@ -3,13 +3,14 @@
 namespace CottaCush\Yii2\Tests\Text;
 
 use CottaCush\Yii2\Text\Utils;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class UtilsTest
  * @author Kehinde Ladipo <kehinde.ladipo@cottacush.com>
  * @package CottaCush\Yii2\Tests\Text
  */
-class UtilsTest extends \PHPUnit_Framework_TestCase
+class UtilsTest extends TestCase
 {
 
     public function testFormatPhoneNumberToInternationalFormat()

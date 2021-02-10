@@ -6,8 +6,9 @@
 namespace CottaCush\Yii2\Tests\HttpClient\Exceptions;
 
 use CottaCush\Yii2\OauthClient\Exceptions\Oauth2ClientException;
+use PHPUnit\Framework\TestCase;
 
-class Oauth2ClientExceptionTest extends \PHPUnit_Framework_TestCase
+class Oauth2ClientExceptionTest extends TestCase
 {
     public function testGetExceptionName()
     {

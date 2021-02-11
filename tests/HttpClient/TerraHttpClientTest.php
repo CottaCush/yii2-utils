@@ -7,9 +7,10 @@ namespace CottaCush\Yii2\Tests\HttpClient;
 
 use CottaCush\Yii2\HttpClient\TerraHttpClient;
 use linslin\yii2\curl\Curl;
+use PHPUnit\Framework\TestCase;
 use yii\helpers\Json;
 
-class TerraHttpClientTest extends \PHPUnit_Framework_TestCase
+class TerraHttpClientTest extends TestCase
 {
     const BASE_URL = "http://jsonplaceholder.typicode.com";
     private $testPostParams = ['title' => 'test', 'author' => 'test'];
@@ -18,7 +19,7 @@ class TerraHttpClientTest extends \PHPUnit_Framework_TestCase
     /** @var  $httpClient TerraHttpClient */
     protected $httpClient;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->httpClient = new TerraHttpClient(self::BASE_URL);
@@ -80,7 +81,7 @@ class TerraHttpClientTest extends \PHPUnit_Framework_TestCase
         $this->httpClient->setAccessToken(self::ACCESS_TOKEN);
         $this->assertEquals(self::ACCESS_TOKEN, $this->httpClient->getAccessToken());
         $this->httpClient->get('posts');
-        $this->assertContains(
+        $this->assertStringContainsString(
             'access_token=' . $this->httpClient->getAccessToken(),
             $this->httpClient->getLastRequestUrl()
         );

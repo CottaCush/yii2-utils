@@ -6,8 +6,9 @@
 namespace CottaCush\Yii2\Tests\HttpClient\Exceptions;
 
 use CottaCush\Yii2\HttpClient\Exceptions\HttpClientException;
+use PHPUnit\Framework\TestCase;
 
-class HttpClientExceptionTest extends \PHPUnit_Framework_TestCase
+class HttpClientExceptionTest extends TestCase
 {
     public function testGetExceptionName()
     {

@@ -9,15 +9,16 @@ use CottaCush\Yii2\OauthClient\Oauth2Client;
 use Faker\Factory;
 use Faker\Generator;
 use linslin\yii2\curl\Curl;
+use PHPUnit\Framework\TestCase;
 use yii\authclient\OAuth2;
 
-class Oauth2ClientTest extends \PHPUnit_Framework_TestCase
+class Oauth2ClientTest extends TestCase
 {
 
     /** @var Generator $faker */
     protected $faker;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->faker = Factory::create();

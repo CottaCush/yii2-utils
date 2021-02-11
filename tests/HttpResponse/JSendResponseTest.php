@@ -4,18 +4,19 @@ namespace CottaCush\Yii2\Tests\HttpResponse;
 use CottaCush\Yii2\HttpResponse\JSendResponse;
 use Faker\Factory;
 use Faker\Generator;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class JSendResponseTest
  * @package CottaCush\Yii2\Tests\HttpResponse
  * @author Adegoke Obasa <goke@cottacush.com>
  */
-class JSendResponseTest extends \PHPUnit_Framework_TestCase
+class JSendResponseTest extends TestCase
 {
     /** @var Generator $faker */
     protected $faker;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->faker = Factory::create();

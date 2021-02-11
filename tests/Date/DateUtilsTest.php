@@ -4,13 +4,14 @@ namespace CottaCush\Yii2\Tests\Date;
 
 use CottaCush\Yii2\Date\DateFormat;
 use CottaCush\Yii2\Date\DateUtils;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class DateUtilsTest
  * @author Adeyemi Olaoye <yemi@cottacush.com>
  * @package CottaCush\Yii2\Tests\Date
  */
-class DateUtilsTest extends \PHPUnit_Framework_TestCase
+class DateUtilsTest extends TestCase
 {
     public function testToRelativeTime()
     {

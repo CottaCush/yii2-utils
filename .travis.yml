@@ -26,8 +26,8 @@ matrix:
 
 before_script:
   - travis_retry composer self-update
-  - travis_entry composer self-update --1
   - travis_retry composer config --global github-oauth.github.com "$GITHUB_TOKEN"
+  - travis_entry composer self-update 1.10.12
   - travis_retry composer global require "fxp/composer-asset-plugin:~1.4"
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
   - travis_retry composer install --no-interaction

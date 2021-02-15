@@ -1,8 +1,6 @@
 language: php
 
 php:
-  - 7.0
-  - 7.1
   - 8.0
 
 # This triggers builds to run on the new TravisCI infrastructure.
@@ -17,15 +15,11 @@ cache:
 
 matrix:
   include:
-    - php: 7.0
-      env: 'COMPOSER_FLAGS="--prefer-stable --prefer-lowest"'
-    - php: 7.1
-      env: 'COMPOSER_FLAGS="--prefer-stable --prefer-lowest"'
     - php: 8.0
       env: 'COMPOSER_FLAGS="--prefer-stable --prefer-lowest"'
 
 before_script:
-  - travis_retry composer self-update
+  - travis_retry composer self-update --1
   - travis_retry composer config --global github-oauth.github.com "$GITHUB_TOKEN"
   - travis_retry composer global require "fxp/composer-asset-plugin:~1.4"
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
@@ -34,7 +28,7 @@ before_script:
 
 script:
   - vendor/bin/phpcs --standard=psr2 src/
-  - vendor/bin/phpunit --coverage-text --coverage-clover build/logs/clover.xml
+  - vendor/bin/phpunit --coverage-clover build/logs/clover.xml
 
 after_success:
   - sh -c 'php vendor/bin/coveralls -v'

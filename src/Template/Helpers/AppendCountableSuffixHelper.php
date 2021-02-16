@@ -45,13 +45,12 @@ class AppendCountableSuffixHelper implements HelperInterface
      * @param $pluralForm
      * @return string
      */
-    public static function appendCountableSuffix($text, $suffix, $pluralForm)
+    public static function appendCountableSuffix($text, $suffix, $pluralForm): string
     {
         if (is_null($text) || !is_numeric($text)) {
             return $text;
         }
 
-        $textWithLabel = ($text > 1) ? $text . ' ' . $pluralForm : $text . ' ' . $suffix;
-        return $textWithLabel;
+        return ($text > 1) ? $text . ' ' . $pluralForm : $text . ' ' . $suffix;
     }
 }

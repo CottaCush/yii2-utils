@@ -3,6 +3,7 @@
 namespace CottaCush\Yii2\Text;
 
 use CottaCush\Yii2\Template\HandlebarsTemplatingEngine;
+use Exception;
 use Hashids\Hashids;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
@@ -24,7 +25,7 @@ class Utils
      * @param string $char
      * @return string
      */
-    public static function asteriskise($text, $untouchedLength = 6, $char = '*')
+    public static function asteriskise($text, $untouchedLength = 6, $char = '*'): string
     {
         $length = strlen($text);
         if ($length <= $untouchedLength) {
@@ -47,9 +48,9 @@ class Utils
      * @param $salt
      * @param int $hashLength
      * @return string
-     * @throws \Exception
+     * @throws Exception
      */
-    public static function encodeId($id, $salt, $hashLength = self::MIN_HASH_LENGTH)
+    public static function encodeId($id, $salt, $hashLength = self::MIN_HASH_LENGTH): string
     {
         $hashIds = new Hashids($salt, $hashLength);
         return $hashIds->encode($id);
@@ -62,9 +63,9 @@ class Utils
      * @param $salt
      * @param int $hashLength
      * @return int
-     * @throws \Exception
+     * @throws Exception
      */
-    public static function decodeId($hash, $salt, $hashLength = self::MIN_HASH_LENGTH)
+    public static function decodeId($hash, $salt, $hashLength = self::MIN_HASH_LENGTH): int
     {
         $hashIds = new Hashids($salt, $hashLength);
         return ArrayHelper::getValue($hashIds->decode($hash), '0');
@@ -80,7 +81,7 @@ class Utils
      * @param string $tag
      * @return string
      */
-    public static function getStatusHtml($status, $extraClasses = '', $baseClass = 'label', $tag = 'span')
+    public static function getStatusHtml($status, $extraClasses = '', $baseClass = 'label', $tag = 'span'): string
     {
         $status = strtolower($status);
         $statusHyphenated = implode('-', explode(' ', $status));
@@ -96,7 +97,7 @@ class Utils
      * @param $numberLength
      * @return string
      */
-    public static function formatPhoneNumberToInternationalFormat($countryCode, $number, $numberLength)
+    public static function formatPhoneNumberToInternationalFormat($countryCode, $number, $numberLength): string
     {
         $actualNumber = substr($number, -($numberLength), $numberLength);
 
@@ -108,22 +109,22 @@ class Utils
     }
 
     /**
-     * @author Olawale Lawal <wale@cottacush.com>
      * @param array $base
      * @param array $challenger
      * @return bool
+     * @author Olawale Lawal <wale@cottacush.com>
      */
-    public static function isArrayDifferent($base, $challenger)
+    public static function isArrayDifferent(array $base, array $challenger): bool
     {
         return count($base) != count($challenger) || array_diff($challenger, $base);
     }
 
     /**
-     * @author Olawale Lawal <wale@cottacush.com>
      * @param array $array
      * @return array
+     * @author Olawale Lawal <wale@cottacush.com>
      */
-    public static function flattenArray($array)
+    public static function flattenArray(array $array): array
     {
         $result = array();
 
@@ -146,7 +147,7 @@ class Utils
      * @param $amount
      * @return string
      */
-    public static function formatToNaira($amount)
+    public static function formatToNaira($amount): string
     {
         if (is_null($amount) || !is_numeric($amount)) {
             return $amount;
@@ -161,7 +162,7 @@ class Utils
      * @param array $params
      * @return string
      */
-    public static function getActualMessage($template, array $params)
+    public static function getActualMessage($template, array $params): string
     {
         $engine = new HandlebarsTemplatingEngine();
         return $engine->renderTemplate($template, $params);

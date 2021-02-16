@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 class JSendResponseTest extends TestCase
 {
     /** @var Generator $faker */
-    protected $faker;
+    protected Generator $faker;
 
     public function setUp(): void
     {

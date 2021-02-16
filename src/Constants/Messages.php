@@ -24,7 +24,7 @@ class Messages
      * @param string $task
      * @return string
      */
-    public static function getSuccessMessage($entity, $task = self::TASK_CREATE)
+    public static function getSuccessMessage($entity, $task = self::TASK_CREATE): string
     {
         return sprintf('%s %s successfully', $entity, $task);
     }
@@ -35,7 +35,7 @@ class Messages
      * @param string $creationTask
      * @return string
      */
-    public static function getEmptyStateMessage($entity, $creationTask = self::TASK_CREATE)
+    public static function getEmptyStateMessage($entity, $creationTask = self::TASK_CREATE): string
     {
         return sprintf('No %s has been %s', $entity, $creationTask);
     }
@@ -46,12 +46,12 @@ class Messages
      * @param string $action
      * @return string
      */
-    public static function getWarningMessage($entity, $action)
+    public static function getWarningMessage($entity, $action): string
     {
         return sprintf('Are you sure you want to %s this %s?', $action, $entity);
     }
 
-    public static function getIntegrityViolationMsg($entity, $task = self::TASK_DELETE)
+    public static function getIntegrityViolationMsg($entity, $task = self::TASK_DELETE): string
     {
         return sprintf('This %s is in use, hence cannot be %s', $entity, $task);
     }

@@ -5,6 +5,7 @@
 
 namespace CottaCush\Yii2\Tests\HttpClient;
 
+use CottaCush\Yii2\HttpClient\Exceptions\HttpClientException;
 use CottaCush\Yii2\HttpClient\TerraHttpClient;
 use linslin\yii2\curl\Curl;
 use PHPUnit\Framework\TestCase;
@@ -13,11 +14,11 @@ use yii\helpers\Json;
 class TerraHttpClientTest extends TestCase
 {
     const BASE_URL = "http://jsonplaceholder.typicode.com";
-    private $testPostParams = ['title' => 'test', 'author' => 'test'];
+    private array $testPostParams = ['title' => 'test', 'author' => 'test'];
     const ACCESS_TOKEN = "123456";
 
     /** @var  $httpClient TerraHttpClient */
-    protected $httpClient;
+    protected TerraHttpClient $httpClient;
 
     public function setUp(): void
     {
@@ -26,11 +27,11 @@ class TerraHttpClientTest extends TestCase
     }
 
     /**
-     * @expectedException \CottaCush\Yii2\HttpClient\Exceptions\HttpClientException
      * @author Adegoke Obasa <goke@cottacush.com>
      */
     public function testInitializeWithInvalidUrl()
     {
+        $this->expectException(HttpClientException::class);
         new TerraHttpClient('');
     }
 
@@ -75,6 +76,9 @@ class TerraHttpClientTest extends TestCase
         $this->assertFalse($this->httpClient->isUseOauth());
     }
 
+    /**
+     * @throws HttpClientException
+     */
     public function testSetAccessToken()
     {
         $this->assertNull($this->httpClient->getAccessToken());
@@ -87,6 +91,9 @@ class TerraHttpClientTest extends TestCase
         );
     }
 
+    /**
+     * @throws HttpClientException
+     */
     public function testBuildUrl()
     {
         $this->httpClient->get('posts', ['id' => 1]);
@@ -97,11 +104,11 @@ class TerraHttpClientTest extends TestCase
     }
 
     /**
-     * @expectedException \CottaCush\Yii2\HttpClient\Exceptions\HttpClientException
      * @author Adegoke Obasa <goke@cottacush.com>
      */
     public function testGetWithInvalidParams()
     {
+        $this->expectException(HttpClientException::class);
         $this->httpClient->get('posts', "Adegoke Obasa");
     }
 

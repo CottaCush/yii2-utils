@@ -9,24 +9,23 @@ use yii\web\Response;
 
 class BaseAction extends Action
 {
-    /** @var ActiveRecord $model */
-    public $model;
+    public ActiveRecord $model;
 
     public $postData;
-    public $returnUrl = '';
+    public string $returnUrl = '';
 
-    public $recordNotFound = 'Record not found';
-    public $errorMessage = '';
-    public $successMessage = '';
+    public string $recordNotFound = 'Record not found';
+    public string $errorMessage = '';
+    public string $successMessage = '';
 
     /** @var bool Checks if the login is required before action is executed */
-    public $requireLogin = true;
+    public bool $requireLogin = true;
 
     /**
+     * @return bool|Response
      * @author Olawale Lawal <wale@cottacush.com>
-     * @return bool|\yii\web\Response
      */
-    public function beforeRun()
+    public function beforeRun(): Response|bool
     {
         if (!$this->requireLogin) {
             return true;

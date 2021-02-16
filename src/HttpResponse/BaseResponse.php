@@ -2,6 +2,7 @@
 
 namespace CottaCush\Yii2\HttpResponse;
 
+use Exception;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -34,7 +35,7 @@ abstract class BaseResponse
      * @author Adegoke Obasa <goke@cottacush.com>
      * @return mixed
      */
-    public function getRawResponse()
+    public function getRawResponse(): mixed
     {
         return $this->rawResponse;
     }
@@ -43,17 +44,18 @@ abstract class BaseResponse
      * @author Adegoke Obasa <goke@cottacush.com>
      * @return mixed
      */
-    public function getParsedResponse()
+    public function getParsedResponse(): mixed
     {
         return $this->parsedResponse;
     }
 
     /**
      * Returns true if response is a success response
+     * @return bool
+     * @throws Exception
      * @author Adegoke Obasa <goke@cottacush.com>
-     * @return mixed
      */
-    public function isSuccess()
+    public function isSuccess(): bool
     {
         return ArrayHelper::getValue($this->parsedResponse, $this->getStatusParam()) == $this->getSuccessValue();
     }
@@ -65,27 +67,27 @@ abstract class BaseResponse
      * @param null $default
      * @return mixed
      */
-    abstract public function get($key, $default = null);
+    abstract public function get($key, $default = null): mixed;
 
     /**
      * Returns the Status parameter
      * @author Adegoke Obasa <goke@cottacush.com>
      * @return mixed
      */
-    abstract public function getStatusParam();
+    abstract public function getStatusParam(): mixed;
 
     /**
      * Returns the value for a success status
      * @author Adegoke Obasa <goke@cottacush.com>
      * @return mixed
      */
-    abstract public function getSuccessValue();
+    abstract public function getSuccessValue(): mixed;
 
     /**
      * @author Adegoke Obasa <goke@cottacush.com>
      * @return boolean
      */
-    public function isResponseParsed()
+    public function isResponseParsed(): bool
     {
         return $this->responseParsed;
     }

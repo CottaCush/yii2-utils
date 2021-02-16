@@ -7,6 +7,7 @@ namespace CottaCush\Yii2\Action;
 
 use CottaCush\Yii2\Controller\BaseController;
 use yii\db\IntegrityException;
+use yii\web\Response;
 
 /**
  * Class UpdateAction
@@ -21,9 +22,9 @@ class UpdateAction extends BaseAction
     /**
      * @author Adegoke Obasa <goke@cottacush.com>
      * @author Akinwunmi Taiwo <taiwo@cottacush.com>
-     * @return \yii\web\Response
+     * @return Response
      */
-    public function run()
+    public function run(): Response
     {
         /** @var BaseController $controller */
         $controller = $this->controller;

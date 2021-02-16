@@ -7,12 +7,21 @@ use CottaCush\Yii2\Action\SoftDeleteAction;
 use CottaCush\Yii2\Action\UpdateAction;
 use CottaCush\Yii2\Constants\Messages;
 use CottaCush\Yii2\Model\BaseModel;
+use Exception;
 use Lukasoppermann\Httpstatus\Httpstatus;
 use Yii;
+use yii\base\Action;
+use yii\base\ExitException;
+use yii\base\InvalidConfigException;
+use yii\base\Security;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
+use yii\web\Request;
 use yii\web\Response;
+use yii\web\Session;
+use yii\web\User;
 
 /**
  * Class BaseController
@@ -45,12 +54,12 @@ class BaseController extends Controller
 
     /**
      * Executed after action
-     * @author Adegoke Obasa <goke@cottacush.com>
-     * @param \yii\base\Action $action
+     * @param Action $action
      * @param mixed $result
      * @return mixed
+     * @author Adegoke Obasa <goke@cottacush.com>
      */
-    public function afterAction($action, $result)
+    public function afterAction(Action $action, mixed $result): mixed
     {
         $result = parent::afterAction($action, $result);
         $this->setSecurityHeaders();
@@ -83,10 +92,10 @@ class BaseController extends Controller
      * @param $data
      * @return array
      */
-    public function sendSuccessResponse($data)
+    public function sendSuccessResponse($data): array
     {
-        \Yii::$app->response->format = Response::FORMAT_JSON;
-        \Yii::$app->response->setStatusCode(200, $this->httpStatuses->getReasonPhrase(200));
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        Yii::$app->response->setStatusCode(200, $this->httpStatuses->getReasonPhrase(200));
 
         return [
             'status' => 'success',
@@ -104,11 +113,11 @@ class BaseController extends Controller
      * @param null $data
      * @return array
      */
-    public function sendErrorResponse($message, $code, $httpStatusCode, $data = null)
+    public function sendErrorResponse($message, $code, $httpStatusCode, $data = null): array
     {
 
-        \Yii::$app->response->format = Response::FORMAT_JSON;
-        \Yii::$app->response->setStatusCode($httpStatusCode, $this->httpStatuses->getReasonPhrase($httpStatusCode));
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        Yii::$app->response->setStatusCode($httpStatusCode, $this->httpStatuses->getReasonPhrase($httpStatusCode));
 
         $response = [
             'status' => 'error',
@@ -131,10 +140,10 @@ class BaseController extends Controller
      * @param int $httpStatusCode
      * @return array
      */
-    public function sendFailResponse($data, $httpStatusCode = 500)
+    public function sendFailResponse($data, $httpStatusCode = 500): array
     {
-        \Yii::$app->response->format = Response::FORMAT_JSON;
-        \Yii::$app->response->setStatusCode($httpStatusCode, $this->httpStatuses->getReasonPhrase($httpStatusCode));
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        Yii::$app->response->setStatusCode($httpStatusCode, $this->httpStatuses->getReasonPhrase($httpStatusCode));
 
         return [
             'status' => 'fail',
@@ -176,36 +185,36 @@ class BaseController extends Controller
                 Yii::$app->session->addFlash($key, $message);
             }
         } else {
-            \Yii::$app->session->setFlash($key, $messages);
+            Yii::$app->session->setFlash($key, $messages);
         }
     }
 
     /**
      * Get Yii2 request object
+     * @return \yii\console\Request|Request
      * @author Adegoke Obasa <goke@cottacush.com>
-     * @return \yii\console\Request|\yii\web\Request
      */
-    public function getRequest()
+    public function getRequest(): Request|\yii\console\Request
     {
         return Yii::$app->request;
     }
 
     /**
      * Get Yii2 response object
-     * @author Adegoke Obasa <goke@cottacush.com>
-     * @return \yii\console\Request|\yii\web\Response
+     * @return \yii\console\Request|Response
+     *@author Adegoke Obasa <goke@cottacush.com>
      */
-    public function getResponse()
+    public function getResponse(): Response|\yii\console\Request
     {
         return Yii::$app->response;
     }
 
     /**
      * Get Yii2 session object
+     * @return mixed
      * @author Adegoke Obasa <goke@cottacush.com>
-     * @return mixed|\yii\web\Session
      */
-    public function getSession()
+    public function getSession(): mixed
     {
         return Yii::$app->session;
     }
@@ -213,9 +222,9 @@ class BaseController extends Controller
     /**
      * Get Yii2 security object
      * @author Adegoke Obasa <goke@cottacush.com>
-     * @return \yii\base\Security
+     * @return Security
      */
-    public function getSecurity()
+    public function getSecurity(): Security
     {
         return Yii::$app->security;
     }
@@ -235,7 +244,7 @@ class BaseController extends Controller
      * @param bool $sticky
      * @return string
      */
-    public function showFlashMessages($sticky = false)
+    public function showFlashMessages($sticky = false): string
     {
         $timeout = $sticky ? 0 : 5000;
         $flashMessages = [];
@@ -260,7 +269,7 @@ class BaseController extends Controller
      * @param $messageArray
      * @return string
      */
-    protected function mergeFlashMessages($messageArray)
+    protected function mergeFlashMessages($messageArray): string
     {
         $messages = array_values($messageArray);
         $flashMessage = '';
@@ -282,17 +291,18 @@ class BaseController extends Controller
     /**
      * Returns the user for the current module
      * @author Adegoke Obasa <goke@cottacush.com>
-     * @return \yii\web\User null|object
-     * @throws \yii\base\InvalidConfigException
+     * @return User null|object
+     * @throws InvalidConfigException
      */
-    public function getModuleUser()
+    public function getModuleUser(): User
     {
         return $this->module->get('user');
     }
 
     /**
-     * @author Olawale Lawal <wale@cottacush.com>
      * @param $url
+     * @throws ExitException
+     * @author Olawale Lawal <wale@cottacush.com>
      */
     public function sendTerminalResponse($url)
     {
@@ -302,11 +312,12 @@ class BaseController extends Controller
 
     /**
      * Checks if the current request is a POST and handles redirection
-     * @author Olawale Lawal <wale@cottacush.com>
      * @param null $redirectUrl
      * @return bool
+     * @throws ExitException
+     * @author Olawale Lawal <wale@cottacush.com>
      */
-    public function isPostCheck($redirectUrl = null)
+    public function isPostCheck($redirectUrl = null): bool
     {
         if ($this->getRequest()->isPost) {
             return true;
@@ -317,10 +328,14 @@ class BaseController extends Controller
         $this->sendTerminalResponse($redirectUrl);
     }
 
-    public function loginRequireBeforeAction()
+    /**
+     * @return bool
+     * @throws ForbiddenHttpException
+     * @throws Exception
+     */
+    public function loginRequireBeforeAction(): bool
     {
-        $excludedPaths = ArrayHelper::getValue(\Yii::$app->params, 'excludedPaths', []);
-
+        $excludedPaths = ArrayHelper::getValue(Yii::$app->params, 'excludedPaths', []);
         $currentRoute = $this->getRoute();
 
         /**
@@ -342,7 +357,7 @@ class BaseController extends Controller
      * @param null $redirectUrl
      * @return Response
      */
-    public function returnError($message, $redirectUrl = null)
+    public function returnError($message, $redirectUrl = null): Response
     {
         $this->flashError($message);
         if (is_null($redirectUrl)) {
@@ -357,7 +372,7 @@ class BaseController extends Controller
      * @param null $redirectUrl
      * @return Response
      */
-    public function returnSuccess($message, $redirectUrl = null)
+    public function returnSuccess($message, $redirectUrl = null): Response
     {
         $this->flashSuccess($message);
         if (is_null($redirectUrl)) {
@@ -373,7 +388,7 @@ class BaseController extends Controller
      * @param null $redirectToOnFail URL to redirect to on fail or if request is not an ajax request
      * @return string
      */
-    public function renderWidgetAsAjax($widget, $config, $redirectToOnFail = null)
+    public function renderWidgetAsAjax($widget, $config, $redirectToOnFail = null): string
     {
         $referrer = $this->getRequest()->getReferrer() ?: Yii::$app->homeUrl;
 
@@ -400,13 +415,13 @@ class BaseController extends Controller
 
     /**
      * Sets a session variable and redirects to the URL
-     * @author Taiwo Ladipo <ladipotaiwo01@gmail.com>
      * @param $key
      * @param $value
      * @param $redirectUrl
-     * @return \yii\web\Response
+     * @return Response
+     *@author Taiwo Ladipo <ladipotaiwo01@gmail.com>
      */
-    public function setSessionAndRedirect($key, $value, $redirectUrl)
+    public function setSessionAndRedirect($key, $value, $redirectUrl): Response
     {
         $this->getSession()->set($key, $value);
         return $this->redirect($redirectUrl);
@@ -417,7 +432,7 @@ class BaseController extends Controller
      * @author Taiwo Ladipo <ladipotaiwo01@gmail.com>
      * @return mixed
      */
-    public function getPermissionManager()
+    public function getPermissionManager(): mixed
     {
         return Yii::$app->permissionManager;
     }
@@ -431,10 +446,10 @@ class BaseController extends Controller
      * @param $errorMsg
      * @param $defaultUrl
      * @return bool|Response
-     * @throws \yii\base\ExitException
-     * @throws \yii\web\ForbiddenHttpException
+     * @throws ExitException
+     * @throws ForbiddenHttpException
      */
-    public function canAccess($permissionKeys, $fullAccessKey, $errorMsg, $defaultUrl, $redirect = false)
+    public function canAccess($permissionKeys, $fullAccessKey, $errorMsg, $defaultUrl, $redirect = false): Response|bool
     {
         if ($this->getUser()->isGuest) {
             return $this->getUser()->loginRequired();
@@ -470,15 +485,17 @@ class BaseController extends Controller
     }
 
     /**
-     * @author Olawale Lawal <wale@cottacush.com>
      * @param $model
      * @param $entityName
      * @param $actions
      * @param $returnUrl
-     * @param $formName
+     * @param null $formName
      * @return array
+     * @throws InvalidConfigException
+     * @throws Exception
+     * @author Olawale Lawal <wale@cottacush.com>
      */
-    public function generateLOVActions($model, $entityName, $actions, $returnUrl, $formName = null)
+    public function generateLOVActions($model, $entityName, $actions, $returnUrl, $formName = null): array
     {
         $generatedActions = [];
         $postData = $this->getRequest()->post();

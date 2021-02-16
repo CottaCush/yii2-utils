@@ -6,6 +6,7 @@ use CottaCush\Yii2\Constants\Messages;
 use CottaCush\Yii2\Controller\BaseController;
 use CottaCush\Yii2\Model\BaseModel;
 use yii\db\IntegrityException;
+use yii\web\Response;
 
 class SoftDeleteAction extends DeleteAction
 {
@@ -18,9 +19,9 @@ class SoftDeleteAction extends DeleteAction
 
     /**
      * @author Olawale Lawal <wale@cottacush.com>
-     * @return \yii\web\Response
+     * @return Response
      */
-    public function run()
+    public function run(): Response
     {
         /** @var BaseController $controller */
         $controller = $this->controller;

@@ -4,6 +4,7 @@ namespace CottaCush\Yii2\Model;
 
 use CottaCush\Yii2\Date\DateUtils;
 use CottaCush\Yii2\Text\Utils;
+use Exception;
 use yii\data\ActiveDataProvider;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
@@ -11,6 +12,10 @@ use yii\helpers\ArrayHelper;
 
 /**
  * Class BaseModel
+ * @property bool|mixed|string|null updated_at
+ * @property bool|mixed|string|null created_at
+ * @property mixed|null id
+ * @property mixed|null is_active
  * @package app\models
  * @author Olawale Lawal <wale@cottacush.com>
  * @codeCoverageIgnore
@@ -21,7 +26,7 @@ class BaseModel extends ActiveRecord
      * @author Adeyemi Olaoye <yemi@cottacush.com>
      * @return bool
      */
-    public function beforeValidate()
+    public function beforeValidate(): bool
     {
         if ($this->hasAttribute('updated_at')) {
             $this->updated_at = DateUtils::getMysqlNow();
@@ -41,7 +46,7 @@ class BaseModel extends ActiveRecord
      * @param $limit
      * @return ActiveQuery
      */
-    public static function addPaginationParameters($query, $offset, $limit)
+    public static function addPaginationParameters($query, $offset, $limit): ActiveQuery
     {
         if (!is_null($offset)) {
             $query->offset($offset);
@@ -56,12 +61,12 @@ class BaseModel extends ActiveRecord
 
     /**
      * Get all model rows
-     * @author Adeyemi Olaoye <yemi@cottacush.com>
      * @param null $offset
      * @param null $limit
-     * @return array|\yii\db\ActiveRecord[]
+     * @return array
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
      */
-    public static function getAll($offset = null, $limit = null)
+    public static function getAll($offset = null, $limit = null): array
     {
         $query = self::find();
         self::addPaginationParameters($query, $offset, $limit);
@@ -77,7 +82,7 @@ class BaseModel extends ActiveRecord
      * @param null $limit
      * @return ActiveDataProvider
      */
-    public static function getAllProvider($relatedRecords = [], $sort = [], $limit = null)
+    public static function getAllProvider($relatedRecords = [], $sort = [], $limit = null): ActiveDataProvider
     {
         $query = self::find()->with($relatedRecords)->orderBy($sort);
         return self::convertToProvider($query, [], $limit);
@@ -90,17 +95,15 @@ class BaseModel extends ActiveRecord
      * @param null $pageSize
      * @return ActiveDataProvider
      */
-    public static function convertToProvider($query, $dataProviderSort = [], $pageSize = null)
+    public static function convertToProvider($query, $dataProviderSort = [], $pageSize = null): ActiveDataProvider
     {
-        $dataProvider = new ActiveDataProvider([
+        return new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
                 'defaultPageSize' => is_null($pageSize) ? self::getDefaultPageSize() : $pageSize
             ],
             'sort' => $dataProviderSort,
         ]);
-
-        return $dataProvider;
     }
 
     /**
@@ -108,7 +111,7 @@ class BaseModel extends ActiveRecord
      * @param null $countField
      * @return int|string
      */
-    public static function getTotalCount($countField = null)
+    public static function getTotalCount($countField = null): int|string
     {
         $model = get_called_class();
         $model = new $model();
@@ -125,15 +128,15 @@ class BaseModel extends ActiveRecord
 
     /**
      * Gets all active
-     * @author Adegoke Obasa <goke@cottacush.com>
-     * @author Olawale Lawal <wale@cottacush.com>
-     * @author Adeyemi Olaoye <yemi@cottacush.com>
      * @param array $orderBy
      * @param string $activeColumn
      * @param int $activeValue
-     * @return array|ActiveRecord[]
+     * @return array
+     * @author Olawale Lawal <wale@cottacush.com>
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @author Adegoke Obasa <goke@cottacush.com>
      */
-    public static function getActive($orderBy = [], $activeColumn = 'is_active', $activeValue = 1)
+    public static function getActive($orderBy = [], $activeColumn = 'is_active', $activeValue = 1): array
     {
         return self::findActive($orderBy, $activeColumn, $activeValue)->all();
     }
@@ -146,7 +149,7 @@ class BaseModel extends ActiveRecord
      * @param int $activeValue
      * @return ActiveQuery
      */
-    public static function findActive($orderBy = [], $activeColumn = 'is_active', $activeValue = 1)
+    public static function findActive($orderBy = [], $activeColumn = 'is_active', $activeValue = 1): ActiveQuery
     {
         /** @var self $model */
         $model = get_called_class();
@@ -163,7 +166,7 @@ class BaseModel extends ActiveRecord
      * @param $value
      * @return self | null
      */
-    public static function getIdByField($field, $value)
+    public static function getIdByField($field, $value): ?BaseModel
     {
         $result = self::find()->where([$field => $value])->limit(1)->one();
         return ($result) ? $result->id : null;
@@ -177,11 +180,8 @@ class BaseModel extends ActiveRecord
      * @param string $createdAtColumn
      * @return array|ActiveQuery
      */
-    public static function getByCreatedDateRange(
-        $startDate,
-        $endDate,
-        $createdAtColumn = 'created_at'
-    ) {
+    public static function getByCreatedDateRange($startDate, $endDate, $createdAtColumn = 'created_at'): ActiveQuery|array
+    {
         $model = get_called_class();
         $model = new $model;
 
@@ -195,31 +195,33 @@ class BaseModel extends ActiveRecord
 
     /**
      * Get hash for model id
-     * @author Adeyemi Olaoye <yemi@cottacush.com>
      * @param $salt
      * @return string
+     * @throws Exception
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
      */
-    public function getIdHash($salt)
+    public function getIdHash($salt): string
     {
         return Utils::encodeId($this->id, $salt);
     }
 
     /**
-     * @author Olawale Lawal <wale@cottacush.com>
      * @return mixed
+     * @throws Exception
+     * @author Olawale Lawal <wale@cottacush.com>
      */
-    public static function getDefaultPageSize()
+    public static function getDefaultPageSize(): mixed
     {
         return ArrayHelper::getValue(\Yii::$app->params, 'defaultPageSize', 20);
     }
 
     /**
      * Returns the first error in the model
+     * @param null $attribute
+     * @return string|null
      * @author Olawale Lawal <wale@cottacush.com>
-     * @param string $attribute
-     * @return string
      */
-    public function getFirstError($attribute = null)
+    public function getFirstError($attribute = null): ?string
     {
         if (!$this->errors) {
             return null;
@@ -228,18 +230,17 @@ class BaseModel extends ActiveRecord
             reset($errors);
             $firstError = current($errors);
             $arrayKeys = array_keys($firstError);
-            $error = $firstError[$arrayKeys[0]];
-            return $error;
+            return $firstError[$arrayKeys[0]];
         }
 
         return parent::getFirstError($attribute);
     }
 
     /**
+     * @return mixed
      * @author Olawale Lawal <wale@cottacush.com>
-     * @return bool|mixed
      */
-    public function isActive()
+    public function isActive(): mixed
     {
         if ($this->hasAttribute('is_active')) {
             return $this->is_active;
@@ -265,7 +266,7 @@ class BaseModel extends ActiveRecord
      * an array map of the value to the labels
      * @return array
      */
-    public static function getDropdownMap($keyAttribute, $valueAttribute, array $default = [])
+    public static function getDropdownMap($keyAttribute, $valueAttribute, array $default = []): array
     {
         $map = ArrayHelper::map(self::getActive(), $keyAttribute, $valueAttribute);
         if ($default) {
@@ -283,7 +284,7 @@ class BaseModel extends ActiveRecord
      * @return int
      * @throws \yii\db\Exception
      */
-    public static function batchInsert($table, $columns, $rows)
+    public static function batchInsert($table, $columns, $rows): int
     {
         $db = self::getDb();
 
@@ -303,7 +304,7 @@ class BaseModel extends ActiveRecord
      * @param string $column
      * @return array|BaseModel|null|ActiveRecord
      */
-    public static function fetchWithRelatedRecords($id, $relatedRecords, $column = 'id')
+    public static function fetchWithRelatedRecords($id, $relatedRecords, $column = 'id'): BaseModel|array|ActiveRecord|null
     {
         /** @var BaseModel $model */
         $model = get_called_class();

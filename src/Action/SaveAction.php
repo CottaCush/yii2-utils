@@ -7,7 +7,9 @@ namespace CottaCush\Yii2\Action;
 
 use CottaCush\Yii2\Controller\BaseController;
 use CottaCush\Yii2\Model\BaseModel;
+use Yii;
 use yii\helpers\Json;
+use yii\web\Response;
 use yii\widgets\ActiveForm;
 
 /**
@@ -20,11 +22,11 @@ class SaveAction extends BaseAction
     public $enableAjaxValidation = false;
 
     /**
-     * @author Adegoke Obasa <goke@cottacush.com>
+     * @return string|Response
      * @author Akinwunmi Taiwo <taiwo@cottacush.com>
-     * @return \yii\web\Response
+     * @author Adegoke Obasa <goke@cottacush.com>
      */
-    public function run()
+    public function run(): Response|string
     {
         /** @var BaseController $controller */
         $controller = $this->controller;
@@ -40,7 +42,7 @@ class SaveAction extends BaseAction
         $model = new $this->model;
         $model->load($this->postData);
 
-        if (\Yii::$app->request->isAjax && $this->enableAjaxValidation) {
+        if (Yii::$app->request->isAjax && $this->enableAjaxValidation) {
             return Json::encode(ActiveForm::validate($model));
         }
 

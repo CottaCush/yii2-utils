@@ -6,6 +6,7 @@
 namespace CottaCush\Yii2\Action;
 
 use CottaCush\Yii2\Controller\BaseController;
+use yii\web\Response;
 
 /**
  * Class DeleteAction
@@ -17,7 +18,7 @@ class DeleteAction extends BaseAction
 {
     public $deleteAttribute = 'is_active';
     public $deleteStatus = 0;
-    public $errorMessage = 'Record not found';
+    public string $errorMessage = 'Record not found';
 
     public $extraFields = null;
     public $formName = '';
@@ -25,9 +26,9 @@ class DeleteAction extends BaseAction
     /**
      * @author Adegoke Obasa <goke@cottacush.com>
      * @author Akinwunmi Taiwo <taiwo@cottacush.com>
-     * @return \yii\web\Response
+     * @return Response
      */
-    public function run()
+    public function run(): Response
     {
         /** @var BaseController $controller */
         $controller = $this->controller;

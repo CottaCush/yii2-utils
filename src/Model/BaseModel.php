@@ -75,12 +75,13 @@ class BaseModel extends ActiveRecord
 
     /**
      * Get all model rows with the
-     * @author Adeyemi Olaoye <yemi@cottacush.com>
-     * @author Olawale Lawal <wale@cottacush.com>
      * @param array $relatedRecords
-     * @param array|null $sort
+     * @param array $sort
      * @param null $limit
      * @return ActiveDataProvider
+     * @throws Exception
+     * @author Olawale Lawal <wale@cottacush.com>
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
      */
     public static function getAllProvider($relatedRecords = [], $sort = [], $limit = null): ActiveDataProvider
     {
@@ -89,11 +90,12 @@ class BaseModel extends ActiveRecord
     }
 
     /**
-     * @author Olawale Lawal <wale@cottacush.com>
      * @param $query
      * @param array $dataProviderSort
      * @param null $pageSize
      * @return ActiveDataProvider
+     * @throws Exception
+     * @author Olawale Lawal <wale@cottacush.com>
      */
     public static function convertToProvider($query, $dataProviderSort = [], $pageSize = null): ActiveDataProvider
     {
@@ -180,8 +182,11 @@ class BaseModel extends ActiveRecord
      * @param string $createdAtColumn
      * @return array|ActiveQuery
      */
-    public static function getByCreatedDateRange($startDate, $endDate, $createdAtColumn = 'created_at'): ActiveQuery|array
-    {
+    public static function getByCreatedDateRange(
+        $startDate,
+        $endDate,
+        $createdAtColumn = 'created_at'
+    ): ActiveQuery|array {
         $model = get_called_class();
         $model = new $model;
 
@@ -304,8 +309,11 @@ class BaseModel extends ActiveRecord
      * @param string $column
      * @return array|BaseModel|null|ActiveRecord
      */
-    public static function fetchWithRelatedRecords($id, $relatedRecords, $column = 'id'): BaseModel|array|ActiveRecord|null
-    {
+    public static function fetchWithRelatedRecords(
+        $id,
+        $relatedRecords,
+        $column = 'id'
+    ): BaseModel|array|ActiveRecord|null {
         /** @var BaseModel $model */
         $model = get_called_class();
         $model = $model::find()->where([$model::tableName() . '.' . $column => $id])

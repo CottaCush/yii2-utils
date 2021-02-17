@@ -202,7 +202,7 @@ class BaseController extends Controller
     /**
      * Get Yii2 response object
      * @return \yii\console\Request|Response
-     *@author Adegoke Obasa <goke@cottacush.com>
+     * @author Adegoke Obasa <goke@cottacush.com>
      */
     public function getResponse(): Response|\yii\console\Request
     {

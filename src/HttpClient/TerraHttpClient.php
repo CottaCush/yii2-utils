@@ -3,7 +3,6 @@ namespace CottaCush\Yii2\HttpClient;
 
 use CottaCush\Yii2\HttpClient\Exceptions\HttpClientException;
 use CottaCush\Yii2\HttpClient\Messages\HttpClientErrorMessages;
-use JetBrains\PhpStorm\Pure;
 use linslin\yii2\curl\Curl;
 
 /**

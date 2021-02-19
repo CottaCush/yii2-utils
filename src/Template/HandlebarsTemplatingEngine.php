@@ -4,7 +4,6 @@ namespace CottaCush\Yii2\Template;
 
 use CottaCush\Yii2\Template\Helpers\HandleBarsHelpers;
 use CottaCush\Yii2\Template\Helpers\TemplatingEngineInterface;
-use Handlebars\Handlebars;
 
 /**
  * Class HandlebarsTemplatingEngine

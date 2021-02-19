@@ -3,7 +3,7 @@
  * @author Adegoke Obasa <goke@cottacush.com>
  */
 
-namespace CottaCush\Yii2\Tests\OauthClient\Exceptions;
+namespace CottaCush\Yii2\Tests\HttpClient\Exceptions;
 
 use CottaCush\Yii2\HttpClient\Exceptions\HttpClientException;
 use PHPUnit\Framework\TestCase;

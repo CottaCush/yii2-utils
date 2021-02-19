@@ -130,7 +130,7 @@ class DateUtils
      * Get's the datetime in the specified format
      * @param $format
      * @param string $timestamp
-     * @return bool|string|null=
+     * @return bool|string|null
      * @author Adegoke Obasa <goke@cottacush.com>
      */
     public static function getDateTime($format, $timestamp = 'now'): bool|string|null

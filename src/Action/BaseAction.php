@@ -5,6 +5,7 @@ namespace CottaCush\Yii2\Action;
 use CottaCush\Yii2\Controller\BaseController;
 use yii\base\Action;
 use yii\db\ActiveRecord;
+use yii\web\ForbiddenHttpException;
 use yii\web\Response;
 
 class BaseAction extends Action
@@ -23,6 +24,7 @@ class BaseAction extends Action
 
     /**
      * @return bool|Response
+     * @throws ForbiddenHttpException
      * @author Olawale Lawal <wale@cottacush.com>
      */
     public function beforeRun(): Response|bool

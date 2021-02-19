@@ -4,6 +4,7 @@ namespace CottaCush\Yii2\Tests\Date;
 
 use CottaCush\Yii2\Date\DateFormat;
 use CottaCush\Yii2\Date\DateUtils;
+use Exception;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -13,6 +14,9 @@ use PHPUnit\Framework\TestCase;
  */
 class DateUtilsTest extends TestCase
 {
+    /**
+     * @throws Exception
+     */
     public function testToRelativeTime()
     {
         $relativeTime = DateUtils::toRelativeTime(

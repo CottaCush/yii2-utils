@@ -6,6 +6,7 @@
 namespace CottaCush\Yii2\Action;
 
 use CottaCush\Yii2\Controller\BaseController;
+use yii\base\ExitException;
 use yii\web\Response;
 
 /**
@@ -24,9 +25,10 @@ class DeleteAction extends BaseAction
     public $formName = '';
 
     /**
+     * @return Response
+     * @throws ExitException
      * @author Adegoke Obasa <goke@cottacush.com>
      * @author Akinwunmi Taiwo <taiwo@cottacush.com>
-     * @return Response
      */
     public function run(): Response
     {

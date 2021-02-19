@@ -119,7 +119,7 @@ class BaseConsoleController extends Controller
         return $this->db->createCommand()->batchInsert($table, $columns, $rows)->execute();
     }
 
-    public function stdout($string): bool|int
+    public function stdout($string): void
     {
         parent::stdout($string . PHP_EOL);
     }

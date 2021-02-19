@@ -2,6 +2,7 @@
 namespace CottaCush\Yii2\Tests\HttpResponse;
 
 use CottaCush\Yii2\HttpResponse\JSendResponse;
+use Exception;
 use Faker\Factory;
 use Faker\Generator;
 use PHPUnit\Framework\TestCase;
@@ -72,42 +73,63 @@ class JSendResponseTest extends TestCase
         $this->assertEquals($jsonResponse->getCodeParam(), JSendResponse::RESPONSE_CODE_PARAM);
     }
 
+    /**
+     * @throws Exception
+     */
     public function testMessageParamIsCorrect()
     {
         $jsonResponse = new JSendResponse(json_encode([]), false);
         $this->assertEquals($jsonResponse->getMessageParam(), JSendResponse::RESPONSE_MESSAGE_PARAM);
     }
 
+    /**
+     * @throws Exception
+     */
     public function testSuccessValueIsCorrect()
     {
         $jsonResponse = new JSendResponse(json_encode([]), false);
         $this->assertEquals($jsonResponse->getSuccessValue(), JSendResponse::RESPONSE_STATUS_SUCCESS);
     }
 
+    /**
+     * @throws Exception
+     */
     public function testIsSuccessReturnsTrueWhenStatusIsSuccessWhenResponseIsParsed()
     {
         $jsonResponse = new JSendResponse(json_encode(['status' => JSendResponse::RESPONSE_STATUS_SUCCESS]), false);
         $this->assertEquals($jsonResponse->isSuccess(), true);
     }
 
+    /**
+     * @throws Exception
+     */
     public function testIsSuccessReturnsTrueWhenStatusIsSuccessWhenResponseNotParsed()
     {
         $jsonResponse = new JSendResponse(['status' => JSendResponse::RESPONSE_STATUS_SUCCESS]);
         $this->assertEquals($jsonResponse->isSuccess(), true);
     }
 
+    /**
+     * @throws Exception
+     */
     public function testIsSuccessReturnsFalseWhenStatusIsSuccessWhenResponseIsParsed()
     {
         $jsonResponse = new JSendResponse(json_encode(['status' => 'error']), false);
         $this->assertEquals($jsonResponse->isSuccess(), false);
     }
 
+    /**
+     * @throws Exception
+     */
     public function testIsSuccessReturnsFalseWhenStatusIsSuccessWhenResponseNotParsed()
     {
         $jsonResponse = new JSendResponse(['status' => 'error']);
         $this->assertEquals($jsonResponse->isSuccess(), false);
     }
 
+    /**
+     * @throws Exception
+     */
     public function testGetErrorMessageWhenResponseIsNotParsed()
     {
         $message = $this->faker->sentence;
@@ -115,6 +137,9 @@ class JSendResponseTest extends TestCase
         $this->assertEquals($jsonResponse->getErrorMessage(), $message);
     }
 
+    /**
+     * @throws Exception
+     */
     public function testGetErrorMessageWhenResponseIsParsed()
     {
         $message = $this->faker->sentence;
@@ -122,6 +147,9 @@ class JSendResponseTest extends TestCase
         $this->assertEquals($jsonResponse->getErrorMessage(), $message);
     }
 
+    /**
+     * @throws Exception
+     */
     public function testGetCodeWhenResponseIsNotParsed()
     {
         $code = $this->faker->randomDigitNotNull;
@@ -129,6 +157,9 @@ class JSendResponseTest extends TestCase
         $this->assertEquals($jsonResponse->getCode(), $code);
     }
 
+    /**
+     * @throws Exception
+     */
     public function testGetCodeWhenResponseIsParsed()
     {
         $code = $this->faker->randomDigitNotNull;
@@ -136,18 +167,27 @@ class JSendResponseTest extends TestCase
         $this->assertEquals($jsonResponse->getCode(), $code);
     }
 
+    /**
+     * @throws Exception
+     */
     public function testGetCodeWhenNotSetAndResponseIsNotParsed()
     {
         $jsonResponse = new JSendResponse(['status' => 'error']);
         $this->assertEquals($jsonResponse->getCode(), JSendResponse::CODE_NO_CODE);
     }
 
+    /**
+     * @throws Exception
+     */
     public function testGetCodeWhenSetAndResponseIsParsed()
     {
         $jsonResponse = new JSendResponse(json_encode(['status' => 'error']), false);
         $this->assertEquals($jsonResponse->getCode(), JSendResponse::CODE_NO_CODE);
     }
 
+    /**
+     * @throws Exception
+     */
     public function testGetDataWhenResponseIsNotParsed()
     {
         $words = $this->faker->words;
@@ -155,6 +195,9 @@ class JSendResponseTest extends TestCase
         $this->assertEquals($jsonResponse->getData(), $words);
     }
 
+    /**
+     * @throws Exception
+     */
     public function testGetDataWhenResponseIsParsed()
     {
         $words = $this->faker->words;
@@ -162,18 +205,27 @@ class JSendResponseTest extends TestCase
         $this->assertEquals($jsonResponse->getData(), $words);
     }
 
+    /**
+     * @throws Exception
+     */
     public function testGetDataWhenNotSetAndResponseIsNotParsed()
     {
         $jsonResponse = new JSendResponse(['status' => 'success']);
         $this->assertEquals($jsonResponse->getData([]), []);
     }
 
+    /**
+     * @throws Exception
+     */
     public function testGetDataWhenNotSetAndResponseIsParsed()
     {
         $jsonResponse = new JSendResponse(json_encode(['status' => 'success']), false);
         $this->assertEquals($jsonResponse->getData([]), []);
     }
 
+    /**
+     * @throws Exception
+     */
     public function testGetWhenResponseIsNotParsed()
     {
         $words = $this->faker->words;
@@ -181,6 +233,9 @@ class JSendResponseTest extends TestCase
         $this->assertEquals($jsonResponse->get('words'), $words);
     }
 
+    /**
+     * @throws Exception
+     */
     public function testGetWhenResponseIsParsed()
     {
         $words = $this->faker->words;
@@ -188,12 +243,18 @@ class JSendResponseTest extends TestCase
         $this->assertEquals($jsonResponse->get('words'), $words);
     }
 
+    /**
+     * @throws Exception
+     */
     public function testGetWhenNotSetAndResponseIsNotParsed()
     {
         $jsonResponse = new JSendResponse(['status' => 'success']);
         $this->assertEquals($jsonResponse->get('words', []), []);
     }
 
+    /**
+     * @throws Exception
+     */
     public function testGetWhenNotSetAndResponseIsParsed()
     {
         $jsonResponse = new JSendResponse(json_encode(['status' => 'success']), false);

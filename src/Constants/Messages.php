@@ -51,6 +51,11 @@ class Messages
         return sprintf('Are you sure you want to %s this %s?', $action, $entity);
     }
 
+    /**
+     * @param $entity
+     * @param string $task
+     * @return string
+     */
     public static function getIntegrityViolationMsg($entity, $task = self::TASK_DELETE): string
     {
         return sprintf('This %s is in use, hence cannot be %s', $entity, $task);

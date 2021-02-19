@@ -143,6 +143,7 @@ class Oauth2ClientTest extends TestCase
     }
 
     /**
+     * @throws Exception
      * @author Adegoke Obasa <goke@cottacush.com>
      */
     public function testAuthorizeFailure()

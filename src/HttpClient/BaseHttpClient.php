@@ -33,7 +33,7 @@ abstract class BaseHttpClient implements HttpClientInterface
     /**
      * @author Adegoke Obasa <goke@cottacush.com>
      */
-    public function useRawResponse()
+    public function useRawResponse(): self
     {
         $this->rawResponse = true;
         return $this;
@@ -42,7 +42,7 @@ abstract class BaseHttpClient implements HttpClientInterface
     /**
      * @author Adegoke Obasa <goke@cottacush.com>
      */
-    public function useJsonResponse()
+    public function useJsonResponse(): self
     {
         $this->rawResponse = false;
         return $this;
@@ -98,7 +98,8 @@ abstract class BaseHttpClient implements HttpClientInterface
      * @param $url
      * @param array $params
      * @return mixed
-     * @throws HttpClientException*@throws \Exception
+     * @throws HttpClientException
+     * @throws Exception
      * @author Adegoke Obasa <goke@cottacush.com>
      */
     public function get($url, $params = []): mixed

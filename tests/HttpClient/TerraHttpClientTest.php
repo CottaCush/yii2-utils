@@ -7,6 +7,7 @@ namespace CottaCush\Yii2\Tests\HttpClient;
 
 use CottaCush\Yii2\HttpClient\Exceptions\HttpClientException;
 use CottaCush\Yii2\HttpClient\TerraHttpClient;
+use Exception;
 use linslin\yii2\curl\Curl;
 use PHPUnit\Framework\TestCase;
 use yii\helpers\Json;
@@ -112,6 +113,9 @@ class TerraHttpClientTest extends TestCase
         $this->httpClient->get('posts', "Adegoke Obasa");
     }
 
+    /**
+     * @throws Exception
+     */
     public function testGetWithRawResponse()
     {
         $response = $this->httpClient->setUseOauth(false)
@@ -120,6 +124,9 @@ class TerraHttpClientTest extends TestCase
         $this->assertJson($response);
     }
 
+    /**
+     * @throws HttpClientException
+     */
     public function testGetWithJsonResponse()
     {
         $rawResponse = $this->httpClient->setUseOauth(false)
@@ -132,6 +139,9 @@ class TerraHttpClientTest extends TestCase
         $this->assertEquals(Json::decode($rawResponse), $jsonResponse);
     }
 
+    /**
+     * @throws Exception
+     */
     public function testPostWithRawResponse()
     {
         $response = $this->httpClient
@@ -141,6 +151,9 @@ class TerraHttpClientTest extends TestCase
         $this->assertJson($response);
     }
 
+    /**
+     * @throws Exception
+     */
     public function testPostWithJsonResponse()
     {
         $response = $this->httpClient
@@ -150,6 +163,9 @@ class TerraHttpClientTest extends TestCase
         $this->assertEquals(['id' => 101], $response);
     }
 
+    /**
+     * @throws Exception
+     */
     public function testPutWithRawResponse()
     {
         $id = 1;
@@ -160,6 +176,9 @@ class TerraHttpClientTest extends TestCase
         $this->assertJson($response);
     }
 
+    /**
+     * @throws Exception
+     */
     public function testPutWithJsonResponse()
     {
         $id = 1;
@@ -170,6 +189,9 @@ class TerraHttpClientTest extends TestCase
         $this->assertEquals(['id' => $id], $response);
     }
 
+    /**
+     * @throws Exception
+     */
     public function testDeleteWithRawResponse()
     {
         $id = 1;
@@ -180,6 +202,9 @@ class TerraHttpClientTest extends TestCase
         $this->assertJson($response);
     }
 
+    /**
+     * @throws Exception
+     */
     public function testDeleteWithJsonResponse()
     {
         $id = 1;
@@ -190,6 +215,9 @@ class TerraHttpClientTest extends TestCase
         $this->assertEquals([], $response);
     }
 
+    /**
+     * @throws Exception
+     */
     public function testGetParams()
     {
         $this->httpClient
@@ -199,6 +227,9 @@ class TerraHttpClientTest extends TestCase
         $this->assertEquals($this->testPostParams, $this->httpClient->getLastRequestParams());
     }
 
+    /**
+     * @throws Exception
+     */
     public function testPostParams()
     {
         $this->httpClient
@@ -208,6 +239,9 @@ class TerraHttpClientTest extends TestCase
         $this->assertEquals($this->testPostParams, $this->httpClient->getLastRequestParams());
     }
 
+    /**
+     * @throws Exception
+     */
     public function testPostJsonBody()
     {
         $params = Json::encode($this->testPostParams);

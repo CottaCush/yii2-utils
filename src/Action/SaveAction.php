@@ -8,6 +8,7 @@ namespace CottaCush\Yii2\Action;
 use CottaCush\Yii2\Controller\BaseController;
 use CottaCush\Yii2\Model\BaseModel;
 use Yii;
+use yii\base\ExitException;
 use yii\helpers\Json;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
@@ -23,6 +24,7 @@ class SaveAction extends BaseAction
 
     /**
      * @return string|Response
+     * @throws ExitException
      * @author Akinwunmi Taiwo <taiwo@cottacush.com>
      * @author Adegoke Obasa <goke@cottacush.com>
      */

@@ -15,6 +15,10 @@ class TerraHttpClient extends BaseHttpClient
     protected $accessToken;
     protected bool $useOauth = true;
 
+    /**
+     * @param $baseUrl
+     * @throws HttpClientException
+     */
     protected function init($baseUrl)
     {
         if (filter_var($baseUrl, FILTER_VALIDATE_URL) === false) {

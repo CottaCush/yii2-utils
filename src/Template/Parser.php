@@ -90,9 +90,7 @@ class Parser extends \Handlebars\Parser
                         array_push($stack, $token);
                 }
             }
-
         } while ($tokens->valid());
-
         return $stack;
     }
 }

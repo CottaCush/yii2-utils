@@ -2,6 +2,9 @@
 
 namespace CottaCush\Yii2\Template;
 
+use ArrayIterator;
+use LogicException;
+
 class Parser extends \Handlebars\Parser
 {
     /**
@@ -13,7 +16,7 @@ class Parser extends \Handlebars\Parser
      */
     public function parse(array $tokens = array()): array
     {
-        return $this->_buildTree(new \ArrayIterator($tokens));
+        return $this->_buildTree(new ArrayIterator($tokens));
     }
 
     /**
@@ -22,13 +25,13 @@ class Parser extends \Handlebars\Parser
      * {{#begin~}}{{TOKEN}}, TOKEN.. {{LAST}}{{~/begin}} is translated to:
      * {{#begin}}{{~TOKEN}}, TOKEN.. {{LAST~}}{{/begin}}
      *
-     * @param \ArrayIterator $tokens Stream of tokens
+     * @param ArrayIterator $tokens Stream of tokens
      *
-     * @throws \LogicException when nesting errors or mismatched section tags
+     * @throws LogicException when nesting errors or mismatched section tags
      * are encountered.
      * @return array Token parse tree
      */
-    private function _buildTree(\ArrayIterator $tokens): array
+    private function _buildTree(ArrayIterator $tokens): array
     {
         $stack = array();
 
@@ -43,7 +46,7 @@ class Parser extends \Handlebars\Parser
                         do {
                             $result = array_pop($stack);
                             if ($result === null) {
-                                throw new \LogicException(
+                                throw new LogicException(
                                     sprintf(
                                         'Unexpected closing tag: /%s',
                                         $token[Tokenizer::NAME]

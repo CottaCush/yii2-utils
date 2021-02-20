@@ -27,7 +27,6 @@ before_script:
   - travis_retry composer require php-coveralls/php-coveralls:~2.0
 
 script:
-  - vendor/bin/phpcbf --standard=psr2 src
   - vendor/bin/phpcs --standard=psr2 src -n
   - vendor/bin/phpunit --coverage-text --coverage-clover=.build/logs/clover.xml
 

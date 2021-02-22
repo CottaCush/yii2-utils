@@ -43,7 +43,7 @@ class FormatToNairaHelper implements HelperInterface
      * @param $amount
      * @return string
      */
-    public static function formatToNaira($amount)
+    public static function formatToNaira($amount): string
     {
         if (is_null($amount) || !is_numeric($amount)) {
             return $amount;

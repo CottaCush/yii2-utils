@@ -4,7 +4,6 @@ namespace CottaCush\Yii2\Template;
 
 use CottaCush\Yii2\Template\Helpers\HandleBarsHelpers;
 use CottaCush\Yii2\Template\Helpers\TemplatingEngineInterface;
-use Handlebars\Handlebars;
 
 /**
  * Class HandlebarsTemplatingEngine
@@ -23,7 +22,7 @@ class HandlebarsTemplatingEngine extends Handlebars implements TemplatingEngineI
         parent::__construct($options);
     }
 
-    public function renderTemplate($template, array $data)
+    public function renderTemplate($template, array $data): string
     {
         return $this->render($template, $data);
     }

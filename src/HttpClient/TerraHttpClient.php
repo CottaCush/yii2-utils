@@ -13,8 +13,12 @@ use linslin\yii2\curl\Curl;
 class TerraHttpClient extends BaseHttpClient
 {
     protected $accessToken;
-    protected $useOauth = true;
+    protected bool $useOauth = true;
 
+    /**
+     * @param $baseUrl
+     * @throws HttpClientException
+     */
     protected function init($baseUrl)
     {
         if (filter_var($baseUrl, FILTER_VALIDATE_URL) === false) {
@@ -31,13 +35,12 @@ class TerraHttpClient extends BaseHttpClient
 
     /**
      * Builds request URL
-     * @author Adegoke Obasa <goke@cottacush.com>
      * @param $url
      * @param array $params
      * @return string
-     * @throws HttpClientException
+     * @author Adegoke Obasa <goke@cottacush.com>
      */
-    protected function buildUrl($url, $params = [])
+    protected function buildUrl($url, $params = []): string
     {
         if ($this->useOauth) {
             $params['access_token'] = $this->getAccessToken();
@@ -50,17 +53,17 @@ class TerraHttpClient extends BaseHttpClient
      * @author Adegoke Obasa <goke@cottacush.com>
      * @return mixed
      */
-    public function getAccessToken()
+    public function getAccessToken(): mixed
     {
         return $this->accessToken;
     }
 
     /**
-     * @author Adegoke Obasa <goke@cottacush.com>
      * @param mixed $accessToken
      * @return $this
+     * @author Adegoke Obasa <goke@cottacush.com>
      */
-    public function setAccessToken($accessToken)
+    public function setAccessToken(mixed $accessToken): self
     {
         $this->accessToken = $accessToken;
         return $this;
@@ -70,28 +73,28 @@ class TerraHttpClient extends BaseHttpClient
      * @author Adegoke Obasa <goke@cottacush.com>
      * @return boolean
      */
-    public function isUseOauth()
+    public function isUseOauth(): bool
     {
         return $this->useOauth;
     }
 
     /**
-     * @author Adegoke Obasa <goke@cottacush.com>
      * @param boolean $useOauth
      * @return $this
+     * @author Adegoke Obasa <goke@cottacush.com>
      */
-    public function setUseOauth($useOauth)
+    public function setUseOauth(bool $useOauth): self
     {
         $this->useOauth = $useOauth;
         return $this;
     }
 
     /**
-     * @author Adegoke Obasa <goke@cottacush.com>
      * @param $params
-     * @return mixed
+     * @return array
+     *@author Adegoke Obasa <goke@cottacush.com>
      */
-    protected function filterParams($params)
+    protected function filterParams($params): array
     {
         return array_filter($params, function ($item) {
             return is_array($item) || is_object($item) || strlen($item);

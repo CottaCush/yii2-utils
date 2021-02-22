@@ -2,8 +2,11 @@
 
 namespace CottaCush\Yii2\Controller;
 
+use Yii;
+use yii\base\Action;
 use yii\console\Controller;
 use yii\db\Connection;
+use yii\db\Exception;
 use yii\db\Query;
 use yii\db\Transaction;
 
@@ -23,14 +26,14 @@ class BaseConsoleController extends Controller
     protected $transaction;
 
     /**
-     * @author Olawale Lawal <wale@cottacush.com>
-     * @param \yii\base\Action $action
+     * @param Action $action
      * @return bool
+     * @author Olawale Lawal <wale@cottacush.com>
      */
-    public function beforeAction($action)
+    public function beforeAction(Action $action): bool
     {
         if (is_null($this->db)) {
-            $this->db = \Yii::$app->db;
+            $this->db = Yii::$app->db;
         }
         return parent::beforeAction($action);
     }
@@ -44,6 +47,7 @@ class BaseConsoleController extends Controller
     }
 
     /**
+     * @throws Exception
      * @author Olawale Lawal <wale@cottacush.com>
      */
     public function commitTransaction()
@@ -67,44 +71,46 @@ class BaseConsoleController extends Controller
      * @param string $returnColumn
      * @return false|null|string
      */
-    public static function getColumnByField($table, $field, $value, $returnColumn = 'id')
+    public static function getColumnByField($table, $field, $value, $returnColumn = 'id'): bool|string|null
     {
         return (new Query)->select($returnColumn)
             ->from($table)->filterWhere([$field => $value])
             ->scalar();
     }
 
-    public function getRandomOne($table, $column, $conditions = [])
+    public function getRandomOne($table, $column, $conditions = []): bool|array
     {
         return (new Query)->select($column)
             ->from($table)->filterWhere($conditions)->orderBy('rand()')->one();
     }
 
-    public function getAll($table, $columns, $conditions = [])
+    public function getAll($table, $columns, $conditions = []): array
     {
         return (new Query)->select($columns)
             ->from($table)->andFilterWhere($conditions)->all();
     }
 
     /**
-     * @author Olawale Lawal <wale@cottacush.com>
      * @param $table
      * @param array $columns
      * @return int
+     * @throws Exception
+     * @author Olawale Lawal <wale@cottacush.com>
      */
-    public function insert($table, array $columns)
+    public function insert($table, array $columns): int
     {
         return $this->db->createCommand()->insert($table, $columns)->execute();
     }
 
     /**
-     * @author Olawale Lawal <wale@cottacush.com>
      * @param $table
      * @param array $columns
      * @param array $rows
-     * @return int
+     * @return bool|int
+     * @throws Exception
+     * @author Olawale Lawal <wale@cottacush.com>
      */
-    public function batchInsert($table, array $columns, array $rows)
+    public function batchInsert($table, array $columns, array $rows): bool|int
     {
         if (empty($rows)) {
             return true;
@@ -113,7 +119,7 @@ class BaseConsoleController extends Controller
         return $this->db->createCommand()->batchInsert($table, $columns, $rows)->execute();
     }
 
-    public function stdout($string)
+    public function stdout($string): void
     {
         parent::stdout($string . PHP_EOL);
     }

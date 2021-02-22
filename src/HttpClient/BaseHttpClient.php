@@ -7,6 +7,7 @@ namespace CottaCush\Yii2\HttpClient;
 
 use CottaCush\Yii2\HttpClient\Exceptions\HttpClientException;
 use CottaCush\Yii2\HttpClient\Messages\HttpClientErrorMessages;
+use Exception;
 use linslin\yii2\curl\Curl;
 
 abstract class BaseHttpClient implements HttpClientInterface
@@ -32,7 +33,7 @@ abstract class BaseHttpClient implements HttpClientInterface
     /**
      * @author Adegoke Obasa <goke@cottacush.com>
      */
-    public function useRawResponse()
+    public function useRawResponse(): self
     {
         $this->rawResponse = true;
         return $this;
@@ -41,7 +42,7 @@ abstract class BaseHttpClient implements HttpClientInterface
     /**
      * @author Adegoke Obasa <goke@cottacush.com>
      */
-    public function useJsonResponse()
+    public function useJsonResponse(): self
     {
         $this->rawResponse = false;
         return $this;
@@ -51,7 +52,7 @@ abstract class BaseHttpClient implements HttpClientInterface
      * @author Adegoke Obasa <goke@cottacush.com>
      * @return boolean
      */
-    public function isRawResponse()
+    public function isRawResponse(): bool
     {
         return $this->rawResponse;
     }
@@ -60,7 +61,7 @@ abstract class BaseHttpClient implements HttpClientInterface
      * @author Adegoke Obasa <goke@cottacush.com>
      * @return mixed
      */
-    public function getBaseUrl()
+    public function getBaseUrl(): mixed
     {
         return $this->baseUrl;
     }
@@ -69,7 +70,7 @@ abstract class BaseHttpClient implements HttpClientInterface
      * @author Adegoke Obasa <goke@cottacush.com>
      * @return Curl
      */
-    public function getCurlAgent()
+    public function getCurlAgent(): Curl
     {
         return $this->curlAgent;
     }
@@ -78,7 +79,7 @@ abstract class BaseHttpClient implements HttpClientInterface
      * @author Adegoke Obasa <goke@cottacush.com>
      * @return mixed
      */
-    public function getLastRequestUrl()
+    public function getLastRequestUrl(): mixed
     {
         return $this->lastRequestUrl;
     }
@@ -87,20 +88,21 @@ abstract class BaseHttpClient implements HttpClientInterface
      * @author Adegoke Obasa <goke@cottacush.com>
      * @return mixed
      */
-    public function getLastRequestParams()
+    public function getLastRequestParams(): mixed
     {
         return $this->lastRequestParams;
     }
 
     /**
      * Performs GET HTTP request
-     * @author Adegoke Obasa <goke@cottacush.com>
      * @param $url
      * @param array $params
      * @return mixed
      * @throws HttpClientException
+     * @throws Exception
+     * @author Adegoke Obasa <goke@cottacush.com>
      */
-    public function get($url, $params = [])
+    public function get($url, $params = []): mixed
     {
         if (!is_array($params)) {
             throw new HttpClientException(HttpClientErrorMessages::INVALID_QUERY_PARAMS);
@@ -113,12 +115,13 @@ abstract class BaseHttpClient implements HttpClientInterface
 
     /**
      * Performs POST HTTP request
-     * @author Adegoke Obasa <goke@cottacush.com>
      * @param $url
      * @param $params
      * @return mixed
+     * @throws Exception
+     * @author Adegoke Obasa <goke@cottacush.com>
      */
-    public function post($url, $params)
+    public function post($url, $params): mixed
     {
         if (is_array($params)) {
             $params = $this->filterParams($params);
@@ -131,12 +134,13 @@ abstract class BaseHttpClient implements HttpClientInterface
 
     /**
      * Performs PUT HTTP request
-     * @author Adegoke Obasa <goke@cottacush.com>
      * @param $url
      * @param $params
      * @return mixed
+     * @throws Exception
+     * @author Adegoke Obasa <goke@cottacush.com>
      */
-    public function put($url, $params)
+    public function put($url, $params): mixed
     {
         if (is_array($params)) {
             $params = $this->filterParams($params);
@@ -149,12 +153,13 @@ abstract class BaseHttpClient implements HttpClientInterface
 
     /**
      * Performs DELETE HTTP request
-     * @author Adegoke Obasa <goke@cottacush.com>
      * @param $url
      * @param $params
      * @return mixed
+     * @throws Exception
+     * @author Adegoke Obasa <goke@cottacush.com>
      */
-    public function delete($url, $params)
+    public function delete($url, $params): mixed
     {
         if (is_array($params)) {
             $params = $this->filterParams($params);

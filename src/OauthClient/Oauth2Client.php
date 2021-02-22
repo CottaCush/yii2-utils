@@ -7,7 +7,7 @@ use linslin\yii2\curl\Curl;
 use yii\authclient\OAuth2;
 use yii\authclient\OAuthToken;
 use yii\base\Exception;
-use yii\base\InvalidParamException;
+use yii\base\InvalidArgumentException;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -48,8 +48,9 @@ class Oauth2Client
 
     /**
      * Oauth2Client constructor.
-     * @author Adegoke Obasa <goke@cottacush.com>
      * @param array $params
+     * @throws \Exception
+     * @author Adegoke Obasa <goke@cottacush.com>
      */
     public function __construct($params = [])
     {
@@ -60,12 +61,13 @@ class Oauth2Client
 
     /**
      * Handles authorize request response
-     * @author Adegoke Obasa <goke@cottacush.com>
      * @param $response
      * @return mixed
      * @throws Oauth2ClientException
+     * @throws \Exception
+     * @author Adegoke Obasa <goke@cottacush.com>
      */
-    private function handleAuthorizeResponse($response)
+    private function handleAuthorizeResponse($response): mixed
     {
         $status = ArrayHelper::getValue($response, 'status');
 
@@ -83,12 +85,13 @@ class Oauth2Client
 
     /**
      * Authorizes and returns authorization code
-     * @author Adegoke Obasa <goke@cottacush.com>
      * @return mixed code
      * @throws Oauth2ClientException
-     * @throws InvalidParamException
+     * @throws InvalidArgumentException
+     * @throws \Exception
+     * @author Adegoke Obasa <goke@cottacush.com>
      */
-    public function authorize()
+    public function authorize(): mixed
     {
         $this->validateAuthParams();
         try {
@@ -102,18 +105,19 @@ class Oauth2Client
                     'state' => self::STATE_ALIVE
                 ))
             )->post($this->authUrl, false);
-        } catch (InvalidParamException $invalidParamException) {
-            throw new Oauth2ClientException($invalidParamException->getMessage());
+        } catch (InvalidArgumentException $invalidArgumentException) {
+            throw new Oauth2ClientException($invalidArgumentException->getMessage());
         }
         return $this->handleAuthorizeResponse($response);
     }
 
     /**
-     * @author Akinwunmi Taiwo <taiwo@cottacush.com>
      * @return mixed
      * @throws Oauth2ClientException
+     * @throws \Exception
+     * @author Akinwunmi Taiwo <taiwo@cottacush.com>
      */
-    public function fetchAccessTokenWithClientCredentials()
+    public function fetchAccessTokenWithClientCredentials(): mixed
     {
         $this->validateTokenParams();
         try {
@@ -125,8 +129,8 @@ class Oauth2Client
                     'client_secret' => $this->clientSecret
                 ))
             )->post($this->tokenUrl, false);
-        } catch (InvalidParamException $invalidParamException) {
-            throw new Oauth2ClientException($invalidParamException->getMessage());
+        } catch (InvalidArgumentException $invalidArgumentException) {
+            throw new Oauth2ClientException($invalidArgumentException->getMessage());
         }
 
         return $this->handleTokenResponse($response);
@@ -134,12 +138,13 @@ class Oauth2Client
 
     /**
      * Handles token request response
-     * @author Adegoke Obasa <goke@cottacush.com>
      * @param OAuthToken $response
      * @return mixed
      * @throws Oauth2ClientException
+     * @throws \Exception
+     * @author Adegoke Obasa <goke@cottacush.com>
      */
-    private function handleTokenResponse($response)
+    private function handleTokenResponse($response): mixed
     {
         $params = ($response instanceof OAuthToken) ? $response->getParams() : $response;
         $status = ArrayHelper::getValue($params, 'status');
@@ -162,7 +167,7 @@ class Oauth2Client
      * @return mixed Access token
      * @throws Oauth2ClientException
      */
-    public function fetchAccessToken($code)
+    public function fetchAccessToken($code): mixed
     {
         $this->validateTokenParams();
 
@@ -184,7 +189,7 @@ class Oauth2Client
      * @return bool
      * @throws Oauth2ClientException
      */
-    protected function validateAuthParams()
+    protected function validateAuthParams(): bool
     {
         if (empty($this->authUrl) || filter_var($this->authUrl, FILTER_VALIDATE_URL) === false) {
             throw new Oauth2ClientException(sprintf(self::INVALID_AUTH_URL, $this->authUrl));
@@ -207,7 +212,7 @@ class Oauth2Client
      * @return bool
      * @throws Oauth2ClientException
      */
-    protected function validateTokenParams()
+    protected function validateTokenParams(): bool
     {
         if (empty($this->tokenUrl) || filter_var($this->tokenUrl, FILTER_VALIDATE_URL) === false) {
             throw new Oauth2ClientException(sprintf(self::INVALID_TOKEN_URL, $this->tokenUrl));
@@ -226,8 +231,9 @@ class Oauth2Client
 
     /**
      *
-     * @author Adegoke Obasa <goke@cottacush.com>
      * @param $params
+     * @throws \Exception
+     * @author Adegoke Obasa <goke@cottacush.com>
      */
     private function setDefaultParams($params)
     {
@@ -241,16 +247,16 @@ class Oauth2Client
      * @author Adegoke Obasa <goke@cottacush.com>
      * @return mixed
      */
-    public function getClientId()
+    public function getClientId(): mixed
     {
         return $this->clientId;
     }
 
     /**
-     * @author Adegoke Obasa <goke@cottacush.com>
      * @param mixed $clientId
+     * @author Adegoke Obasa <goke@cottacush.com>
      */
-    public function setClientId($clientId)
+    public function setClientId(mixed $clientId)
     {
         $this->clientId = $clientId;
     }
@@ -259,16 +265,16 @@ class Oauth2Client
      * @author Adegoke Obasa <goke@cottacush.com>
      * @return mixed
      */
-    public function getClientSecret()
+    public function getClientSecret(): mixed
     {
         return $this->clientSecret;
     }
 
     /**
-     * @author Adegoke Obasa <goke@cottacush.com>
      * @param mixed $clientSecret
+     * @author Adegoke Obasa <goke@cottacush.com>
      */
-    public function setClientSecret($clientSecret)
+    public function setClientSecret(mixed $clientSecret)
     {
         $this->clientSecret = $clientSecret;
     }
@@ -277,16 +283,16 @@ class Oauth2Client
      * @author Adegoke Obasa <goke@cottacush.com>
      * @return mixed
      */
-    public function getAuthUrl()
+    public function getAuthUrl(): mixed
     {
         return $this->authUrl;
     }
 
     /**
-     * @author Adegoke Obasa <goke@cottacush.com>
      * @param mixed $authUrl
+     * @author Adegoke Obasa <goke@cottacush.com>
      */
-    public function setAuthUrl($authUrl)
+    public function setAuthUrl(mixed $authUrl)
     {
         $this->authUrl = $authUrl;
     }
@@ -295,16 +301,16 @@ class Oauth2Client
      * @author Adegoke Obasa <goke@cottacush.com>
      * @return mixed
      */
-    public function getTokenUrl()
+    public function getTokenUrl(): mixed
     {
         return $this->tokenUrl;
     }
 
     /**
-     * @author Adegoke Obasa <goke@cottacush.com>
      * @param mixed $tokenUrl
+     * @author Adegoke Obasa <goke@cottacush.com>
      */
-    public function setTokenUrl($tokenUrl)
+    public function setTokenUrl(mixed $tokenUrl)
     {
         $this->tokenUrl = $tokenUrl;
     }
@@ -313,7 +319,7 @@ class Oauth2Client
      * @author Adegoke Obasa <goke@cottacush.com>
      * @return OAuth2
      */
-    public function getOauth2()
+    public function getOauth2(): OAuth2
     {
         return $this->oauth2;
     }
@@ -322,23 +328,24 @@ class Oauth2Client
      * @author Adegoke Obasa <goke@cottacush.com>
      * @return Curl
      */
-    public function getCurl()
+    public function getCurl(): Curl
     {
         return $this->curl;
     }
 
     /**
      * Returns the access token
-     * @author Adegoke Obasa <goke@cottacush.com>
      * @return mixed
+     * @throws Oauth2ClientException
+     * @throws \Exception
+     * @author Adegoke Obasa <goke@cottacush.com>
      */
-    public static function getAccessToken()
+    public static function getAccessToken(): mixed
     {
         $oauthClientParams = ArrayHelper::getValue(\Yii::$app->params, 'oauth');
         $oauthClient = new Oauth2Client($oauthClientParams);
         $code = $oauthClient->authorize();
         $token = $oauthClient->fetchAccessToken($code);
-        $accessToken = ArrayHelper::getValue($token, 'access_token');
-        return $accessToken;
+        return ArrayHelper::getValue($token, 'access_token');
     }
 }

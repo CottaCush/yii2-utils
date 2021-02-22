@@ -3,6 +3,7 @@
 namespace CottaCush\Yii2\Date;
 
 use DateTime;
+use Exception;
 
 /**
  * Class DateUtils
@@ -15,13 +16,14 @@ class DateUtils
 
     /**
      * Gets the difference between two date periods
-     * @author Olawale Lawal <wale@cottacush.com>
      * @param $fromTime
      * @param string $toTime
      * @param string $format
      * @return string
+     * @throws Exception
+     * @author Olawale Lawal <wale@cottacush.com>
      */
-    public static function toRelativeTime($fromTime, $toTime = 'now', $format = 'days')
+    public static function toRelativeTime($fromTime, $toTime = 'now', $format = 'days'): string
     {
         $startTime = new DateTime($fromTime);
         $endTime = new DateTime($toTime);
@@ -31,14 +33,14 @@ class DateUtils
 
     /**
      * Returns date range text
-     * @author Adeyemi Olaoye <yemi@cottacush.com>
-     * @author Olawale Lawal <wale@cottacush.com>
      * @param $startDate
      * @param $endDate
      * @param string $toSeparator
-     * @return string
+     * @return bool|string
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @author Olawale Lawal <wale@cottacush.com>
      */
-    public static function getDateRangeText($startDate, $endDate, $toSeparator = 'to')
+    public static function getDateRangeText($startDate, $endDate, $toSeparator = 'to'): bool|string
     {
         if ($startDate == $endDate) {
             return self::format($startDate, DateFormat::FORMAT_SHORT);
@@ -63,7 +65,7 @@ class DateUtils
      * @param $datetime
      * @return bool|string
      */
-    public static function format($datetime, $format = DateFormat::FORMAT_SHORT)
+    public static function format($datetime, $format = DateFormat::FORMAT_SHORT): bool|string
     {
         $datetime = strtotime($datetime);
         if (!$datetime) {
@@ -77,7 +79,7 @@ class DateUtils
      * @author Adegoke Obasa <goke@cottacush.com>
      * @return bool|string
      */
-    public static function getMysqlNow()
+    public static function getMysqlNow(): bool|string
     {
         return self::getCurrentDateTime(DateFormat::FORMAT_MYSQL_STYLE);
     }
@@ -88,7 +90,7 @@ class DateUtils
      * @param $format
      * @return bool|string
      */
-    public static function getCurrentDateTime($format)
+    public static function getCurrentDateTime($format): bool|string
     {
         return date($format);
     }
@@ -98,7 +100,7 @@ class DateUtils
      * @author Adegoke Obasa <goke@cottacush.com>
      * @return bool|string
      */
-    public static function getOracleNow()
+    public static function getOracleNow(): bool|string
     {
         return self::getCurrentDateTime(DateFormat::FORMAT_ORACLE);
     }
@@ -111,7 +113,7 @@ class DateUtils
      * @param $toFormat
      * @return string
      */
-    public static function convertDate($dateString, $fromFormat, $toFormat)
+    public static function convertDate($dateString, $fromFormat, $toFormat): string
     {
         $date = DateTime::createFromFormat($fromFormat, $dateString);
         if (!$date && $fromFormat == DateFormat::FORMAT_ORACLE_WITH_MICROSECONDS) {
@@ -126,12 +128,12 @@ class DateUtils
 
     /**
      * Get's the datetime in the specified format
-     * @author Adegoke Obasa <goke@cottacush.com>
      * @param $format
-     * @param null|string $timestamp
-     * @return bool|string
+     * @param string $timestamp
+     * @return bool|string|null
+     * @author Adegoke Obasa <goke@cottacush.com>
      */
-    public static function getDateTime($format, $timestamp = 'now')
+    public static function getDateTime($format, $timestamp = 'now'): bool|string|null
     {
         $date = strtotime($timestamp);
         if (!$date) {

@@ -1,6 +1,7 @@
 <?php
 namespace CottaCush\Yii2\HttpResponse;
 
+use Exception;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 
@@ -33,21 +34,23 @@ class JSendResponse extends BaseResponse
 
     /**
      * Gets the data from the response
-     * @author Adegoke Obasa <goke@cottacush.com>
      * @param null $defaultValue
      * @return mixed
+     * @throws Exception
+     * @author Adegoke Obasa <goke@cottacush.com>
      */
-    public function getData($defaultValue = null)
+    public function getData($defaultValue = null): mixed
     {
         return ArrayHelper::getValue($this->parsedResponse, self::RESPONSE_DATA_PARAM, $defaultValue);
     }
 
     /**
      * Gets the error message from the response
-     * @author Adegoke Obasa <goke@cottacush.com>
      * @return mixed
+     * @throws Exception
+     * @author Adegoke Obasa <goke@cottacush.com>
      */
-    public function getErrorMessage()
+    public function getErrorMessage(): mixed
     {
         return ArrayHelper::getValue(
             $this->parsedResponse,
@@ -58,22 +61,24 @@ class JSendResponse extends BaseResponse
 
     /**
      * Gets the response code from the response
-     * @author Adegoke Obasa <goke@cottacush.com>
      * @return mixed
+     * @throws Exception
+     * @author Adegoke Obasa <goke@cottacush.com>
      */
-    public function getCode()
+    public function getCode(): mixed
     {
         return ArrayHelper::getValue($this->parsedResponse, self::RESPONSE_CODE_PARAM, self::CODE_NO_CODE);
     }
 
     /**
      * Gets the value of key if key exists, default value otherwise
-     * @author Adegoke Obasa <goke@cottacush.com>
      * @param $key
      * @param null $default
      * @return mixed
+     * @throws Exception
+     * @author Adegoke Obasa <goke@cottacush.com>
      */
-    public function get($key, $default = null)
+    public function get($key, $default = null): mixed
     {
         return ArrayHelper::getValue(
             $this->parsedResponse,
@@ -84,20 +89,20 @@ class JSendResponse extends BaseResponse
 
     /**
      * Returns the Status parameter
-     * @author Adegoke Obasa <goke@cottacush.com>
-     * @return mixed
+     * @return string
+     *@author Adegoke Obasa <goke@cottacush.com>
      */
-    public function getStatusParam()
+    public function getStatusParam(): string
     {
         return self::RESPONSE_STATUS_PARAM;
     }
 
     /**
      * Returns the value for a success status
-     * @author Adegoke Obasa <goke@cottacush.com>
-     * @return mixed
+     * @return string
+     *@author Adegoke Obasa <goke@cottacush.com>
      */
-    public function getSuccessValue()
+    public function getSuccessValue(): string
     {
         return self::RESPONSE_STATUS_SUCCESS;
     }
@@ -107,7 +112,7 @@ class JSendResponse extends BaseResponse
      * @author Adegoke Obasa <goke@cottacush.com>
      * @return string
      */
-    public function getCodeParam()
+    public function getCodeParam(): string
     {
         return self::RESPONSE_CODE_PARAM;
     }
@@ -117,7 +122,7 @@ class JSendResponse extends BaseResponse
      * @author Adegoke Obasa <goke@cottacush.com>
      * @return string
      */
-    public function getMessageParam()
+    public function getMessageParam(): string
     {
         return self::RESPONSE_MESSAGE_PARAM;
     }

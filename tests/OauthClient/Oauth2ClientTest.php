@@ -3,9 +3,11 @@
  * @author Adegoke Obasa <goke@cottacush.com>
  */
 
-namespace CottaCush\Yii2\Tests\HttpClient;
+namespace CottaCush\Yii2\Tests\OauthClient;
 
+use CottaCush\Yii2\OauthClient\Exceptions\Oauth2ClientException;
 use CottaCush\Yii2\OauthClient\Oauth2Client;
+use Exception;
 use Faker\Factory;
 use Faker\Generator;
 use linslin\yii2\curl\Curl;
@@ -14,9 +16,7 @@ use yii\authclient\OAuth2;
 
 class Oauth2ClientTest extends TestCase
 {
-
-    /** @var Generator $faker */
-    protected $faker;
+    protected Generator $faker;
 
     public function setUp(): void
     {
@@ -36,7 +36,7 @@ class Oauth2ClientTest extends TestCase
         $this->assertInstanceOf(OAuth2::class, $oauth2Client->getOauth2());
     }
 
-    protected function getDefaultParams()
+    protected function getDefaultParams(): array
     {
         return [
             Oauth2Client::AUTH_URL => $this->faker->url,
@@ -46,11 +46,19 @@ class Oauth2ClientTest extends TestCase
         ];
     }
 
-    protected function getOauth2ClientWithDefaultParams($defaultParams)
+    /**
+     * @param $defaultParams
+     * @return Oauth2Client
+     * @throws Exception
+     */
+    protected function getOauth2ClientWithDefaultParams($defaultParams): Oauth2Client
     {
         return new Oauth2Client($defaultParams);
     }
 
+    /**
+     * @throws Exception
+     */
     public function testInitializeWithDefaultParams()
     {
         $defaultParams = $this->getDefaultParams();
@@ -62,6 +70,9 @@ class Oauth2ClientTest extends TestCase
         $this->assertEquals($defaultParams[Oauth2Client::CLIENT_SECRET], $oauthClient->getClientSecret());
     }
 
+    /**
+     * @throws Exception
+     */
     public function testSetAndGetAuthUrl()
     {
         $oauthClient = $this->getOauth2ClientWithDefaultParams([]);
@@ -70,6 +81,9 @@ class Oauth2ClientTest extends TestCase
         $this->assertEquals($authUrl, $oauthClient->getAuthUrl());
     }
 
+    /**
+     * @throws Exception
+     */
     public function testSetAndGetTokenUrl()
     {
         $oauthClient = $this->getOauth2ClientWithDefaultParams([]);
@@ -78,6 +92,9 @@ class Oauth2ClientTest extends TestCase
         $this->assertEquals($tokenUrl, $oauthClient->getTokenUrl());
     }
 
+    /**
+     * @throws Exception
+     */
     public function testSetAndGetClientId()
     {
         $oauthClient = $this->getOauth2ClientWithDefaultParams([]);
@@ -86,6 +103,9 @@ class Oauth2ClientTest extends TestCase
         $this->assertEquals($clientId, $oauthClient->getClientId());
     }
 
+    /**
+     * @throws Exception
+     */
     public function testSetAndGetClientSecret()
     {
         $oauthClient = $this->getOauth2ClientWithDefaultParams([]);
@@ -95,11 +115,12 @@ class Oauth2ClientTest extends TestCase
     }
 
     /**
-     * @expectedException \CottaCush\Yii2\OauthClient\Exceptions\Oauth2ClientException
+     * @throws Exception
      * @author Adegoke Obasa <goke@cottacush.com>
      */
     public function testAuthorizeWithInvalidAuthUrl()
     {
+        $this->expectException(Oauth2ClientException::class);
         $oauthClient = new Oauth2Client([
             Oauth2Client::CLIENT_ID => $this->faker->md5,
             Oauth2Client::CLIENT_SECRET => $this->faker->md5,
@@ -108,11 +129,12 @@ class Oauth2ClientTest extends TestCase
     }
 
     /**
-     * @expectedException \CottaCush\Yii2\OauthClient\Exceptions\Oauth2ClientException
+     * @throws Exception
      * @author Adegoke Obasa <goke@cottacush.com>
      */
     public function testAuthorizeWithInvalidClientId()
     {
+        $this->expectException(Oauth2ClientException::class);
         $oauthClient = new Oauth2Client([
             Oauth2Client::AUTH_URL => $this->faker->url,
             Oauth2Client::CLIENT_SECRET => $this->faker->md5,
@@ -121,22 +143,24 @@ class Oauth2ClientTest extends TestCase
     }
 
     /**
-     * @expectedException \CottaCush\Yii2\OauthClient\Exceptions\Oauth2ClientException
+     * @throws Exception
      * @author Adegoke Obasa <goke@cottacush.com>
      */
     public function testAuthorizeFailure()
     {
+        $this->expectException(Oauth2ClientException::class);
         $oauthClient = $this->getOauth2ClientWithDefaultParams($this->getDefaultParams());
         $oauthClient->setAuthUrl("http://localhost"); // Set to a url that doesn't exist
         $oauthClient->authorize();
     }
 
     /**
-     * @expectedException \CottaCush\Yii2\OauthClient\Exceptions\Oauth2ClientException
+     * @throws Exception
      * @author Adegoke Obasa <goke@cottacush.com>
      */
     public function testAuthorizeWithClientSecret()
     {
+        $this->expectException(Oauth2ClientException::class);
         $oauthClient = new Oauth2Client([
             Oauth2Client::AUTH_URL => $this->faker->url,
             Oauth2Client::CLIENT_ID => $this->faker->md5,
@@ -145,11 +169,12 @@ class Oauth2ClientTest extends TestCase
     }
 
     /**
-     * @expectedException \CottaCush\Yii2\OauthClient\Exceptions\Oauth2ClientException
+     * @throws Exception
      * @author Adegoke Obasa <goke@cottacush.com>
      */
     public function testFetchTokenWithInvalidTokenUrl()
     {
+        $this->expectException(Oauth2ClientException::class);
         $oauthClient = new Oauth2Client([
             Oauth2Client::CLIENT_ID => $this->faker->md5,
             Oauth2Client::CLIENT_SECRET => $this->faker->md5,
@@ -158,11 +183,12 @@ class Oauth2ClientTest extends TestCase
     }
 
     /**
-     * @expectedException \CottaCush\Yii2\OauthClient\Exceptions\Oauth2ClientException
+     * @throws Exception
      * @author Adegoke Obasa <goke@cottacush.com>
      */
     public function testFetchTokenWithInvalidClientId()
     {
+        $this->expectException(Oauth2ClientException::class);
         $oauthClient = new Oauth2Client([
             Oauth2Client::TOKEN_URL => $this->faker->url,
             Oauth2Client::CLIENT_SECRET => $this->faker->md5,
@@ -171,11 +197,12 @@ class Oauth2ClientTest extends TestCase
     }
 
     /**
-     * @expectedException \CottaCush\Yii2\OauthClient\Exceptions\Oauth2ClientException
+     * @throws Exception
      * @author Adegoke Obasa <goke@cottacush.com>
      */
     public function testFetchTokenWithInvalidClientSecret()
     {
+        $this->expectException(Oauth2ClientException::class);
         $oauthClient = new Oauth2Client([
             Oauth2Client::TOKEN_URL => $this->faker->url,
             Oauth2Client::CLIENT_ID => $this->faker->md5,
@@ -184,11 +211,12 @@ class Oauth2ClientTest extends TestCase
     }
 
     /**
-     * @expectedException \CottaCush\Yii2\OauthClient\Exceptions\Oauth2ClientException
+     * @throws Exception
      * @author Akinwunmi Taiwo <taiwo@cottacush.com>
      */
     public function testFetchTokenWithClientGrantType()
     {
+        $this->expectException(Oauth2ClientException::class);
         $oauthClient = new Oauth2Client([
             Oauth2Client::TOKEN_URL => $this->faker->url,
             Oauth2Client::CLIENT_ID => $this->faker->md5,

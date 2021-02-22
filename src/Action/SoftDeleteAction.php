@@ -5,7 +5,9 @@ namespace CottaCush\Yii2\Action;
 use CottaCush\Yii2\Constants\Messages;
 use CottaCush\Yii2\Controller\BaseController;
 use CottaCush\Yii2\Model\BaseModel;
+use yii\base\ExitException;
 use yii\db\IntegrityException;
+use yii\web\Response;
 
 class SoftDeleteAction extends DeleteAction
 {
@@ -17,10 +19,11 @@ class SoftDeleteAction extends DeleteAction
     public $integrityViolationMessage = Messages::RECORD_USED_ALREADY;
 
     /**
+     * @return Response
+     * @throws ExitException
      * @author Olawale Lawal <wale@cottacush.com>
-     * @return \yii\web\Response
      */
-    public function run()
+    public function run(): Response
     {
         /** @var BaseController $controller */
         $controller = $this->controller;

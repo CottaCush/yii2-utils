@@ -15,7 +15,7 @@ class PaginatedDataProvider extends ArrayDataProvider
     /**
      * @inheritdoc
      */
-    protected function prepareModels()
+    protected function prepareModels(): array
     {
         if (($models = $this->allModels) === null) {
             return [];

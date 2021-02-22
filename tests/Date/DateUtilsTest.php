@@ -4,6 +4,7 @@ namespace CottaCush\Yii2\Tests\Date;
 
 use CottaCush\Yii2\Date\DateFormat;
 use CottaCush\Yii2\Date\DateUtils;
+use Exception;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -13,26 +14,31 @@ use PHPUnit\Framework\TestCase;
  */
 class DateUtilsTest extends TestCase
 {
+    /**
+     * @throws Exception
+     */
     public function testToRelativeTime()
     {
-        $relativeTime = DateUtils::toRelativeTime(date(DateFormat::FORMAT_MYSQL_STYLE_NO_TIME, strtotime('-1 day')));
+        $relativeTime = DateUtils::toRelativeTime(
+            date(DateFormat::FORMAT_MYSQL_STYLE_NO_TIME, strtotime('-1 day'))
+        );
         $this->assertEquals(1, $relativeTime);
     }
 
     /**
-     * @author Adeyemi Olaoye <yemi@cottacush.com>
      * @param $startDate string starting date
      * @param $endDate string ending date
      * @param $expectedDateRange string date range text
      * @dataProvider providerTestGetDateRangeText
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
      */
-    public function testGetDateRangeText($startDate, $endDate, $expectedDateRange)
+    public function testGetDateRangeText(string $startDate, string $endDate, string $expectedDateRange)
     {
         $dateRangeText = DateUtils::getDateRangeText($startDate, $endDate);
         $this->assertEquals($expectedDateRange, $dateRangeText);
     }
 
-    public function providerTestGetDateRangeText()
+    public function providerTestGetDateRangeText(): array
     {
         return [
             ['2016-09-15', '2016-09-16', '15th to 16th Sep 2016'],
@@ -56,7 +62,7 @@ class DateUtilsTest extends TestCase
         $this->assertEquals($actualDateText, $dateText);
     }
 
-    public function providerTestFormat()
+    public function providerTestFormat(): array
     {
         return [
             [DateFormat::FORMAT_MYSQL_STYLE, '2016-09-16 11:40:40'],
@@ -111,14 +117,14 @@ class DateUtilsTest extends TestCase
     }
 
     /**
-     * @author Adeyemi Olaoye <yemi@cottacush.com>
      * @param $fromFormat
      * @param $toFormat
      * @param $expectedDateTime
      * @param string $dateTime
      * @dataProvider providerTestConvertDate
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
      */
-    public function testConvertDate($fromFormat, $toFormat, $expectedDateTime, $dateTime)
+    public function testConvertDate($fromFormat, $toFormat, $expectedDateTime, string $dateTime)
     {
         $convertedDate = DateUtils::convertDate(
             $dateTime,
@@ -128,7 +134,7 @@ class DateUtilsTest extends TestCase
         $this->assertEquals($expectedDateTime, $convertedDate);
     }
 
-    public function providerTestConvertDate()
+    public function providerTestConvertDate(): array
     {
         return [
             [

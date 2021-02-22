@@ -5,7 +5,9 @@
 
 namespace CottaCush\Yii2\Tests\HttpClient;
 
+use CottaCush\Yii2\HttpClient\Exceptions\HttpClientException;
 use CottaCush\Yii2\HttpClient\TerraHttpClient;
+use Exception;
 use linslin\yii2\curl\Curl;
 use PHPUnit\Framework\TestCase;
 use yii\helpers\Json;
@@ -13,11 +15,11 @@ use yii\helpers\Json;
 class TerraHttpClientTest extends TestCase
 {
     const BASE_URL = "http://jsonplaceholder.typicode.com";
-    private $testPostParams = ['title' => 'test', 'author' => 'test'];
+    private array $testPostParams = ['title' => 'test', 'author' => 'test'];
     const ACCESS_TOKEN = "123456";
 
     /** @var  $httpClient TerraHttpClient */
-    protected $httpClient;
+    protected TerraHttpClient $httpClient;
 
     public function setUp(): void
     {
@@ -26,11 +28,11 @@ class TerraHttpClientTest extends TestCase
     }
 
     /**
-     * @expectedException \CottaCush\Yii2\HttpClient\Exceptions\HttpClientException
      * @author Adegoke Obasa <goke@cottacush.com>
      */
     public function testInitializeWithInvalidUrl()
     {
+        $this->expectException(HttpClientException::class);
         new TerraHttpClient('');
     }
 
@@ -75,6 +77,9 @@ class TerraHttpClientTest extends TestCase
         $this->assertFalse($this->httpClient->isUseOauth());
     }
 
+    /**
+     * @throws HttpClientException
+     */
     public function testSetAccessToken()
     {
         $this->assertNull($this->httpClient->getAccessToken());
@@ -87,6 +92,9 @@ class TerraHttpClientTest extends TestCase
         );
     }
 
+    /**
+     * @throws HttpClientException
+     */
     public function testBuildUrl()
     {
         $this->httpClient->get('posts', ['id' => 1]);
@@ -97,14 +105,17 @@ class TerraHttpClientTest extends TestCase
     }
 
     /**
-     * @expectedException \CottaCush\Yii2\HttpClient\Exceptions\HttpClientException
      * @author Adegoke Obasa <goke@cottacush.com>
      */
     public function testGetWithInvalidParams()
     {
+        $this->expectException(HttpClientException::class);
         $this->httpClient->get('posts', "Adegoke Obasa");
     }
 
+    /**
+     * @throws Exception
+     */
     public function testGetWithRawResponse()
     {
         $response = $this->httpClient->setUseOauth(false)
@@ -113,6 +124,9 @@ class TerraHttpClientTest extends TestCase
         $this->assertJson($response);
     }
 
+    /**
+     * @throws HttpClientException
+     */
     public function testGetWithJsonResponse()
     {
         $rawResponse = $this->httpClient->setUseOauth(false)
@@ -125,6 +139,9 @@ class TerraHttpClientTest extends TestCase
         $this->assertEquals(Json::decode($rawResponse), $jsonResponse);
     }
 
+    /**
+     * @throws Exception
+     */
     public function testPostWithRawResponse()
     {
         $response = $this->httpClient
@@ -134,6 +151,9 @@ class TerraHttpClientTest extends TestCase
         $this->assertJson($response);
     }
 
+    /**
+     * @throws Exception
+     */
     public function testPostWithJsonResponse()
     {
         $response = $this->httpClient
@@ -143,6 +163,9 @@ class TerraHttpClientTest extends TestCase
         $this->assertEquals(['id' => 101], $response);
     }
 
+    /**
+     * @throws Exception
+     */
     public function testPutWithRawResponse()
     {
         $id = 1;
@@ -153,6 +176,9 @@ class TerraHttpClientTest extends TestCase
         $this->assertJson($response);
     }
 
+    /**
+     * @throws Exception
+     */
     public function testPutWithJsonResponse()
     {
         $id = 1;
@@ -163,6 +189,9 @@ class TerraHttpClientTest extends TestCase
         $this->assertEquals(['id' => $id], $response);
     }
 
+    /**
+     * @throws Exception
+     */
     public function testDeleteWithRawResponse()
     {
         $id = 1;
@@ -173,6 +202,9 @@ class TerraHttpClientTest extends TestCase
         $this->assertJson($response);
     }
 
+    /**
+     * @throws Exception
+     */
     public function testDeleteWithJsonResponse()
     {
         $id = 1;
@@ -183,6 +215,9 @@ class TerraHttpClientTest extends TestCase
         $this->assertEquals([], $response);
     }
 
+    /**
+     * @throws Exception
+     */
     public function testGetParams()
     {
         $this->httpClient
@@ -192,6 +227,9 @@ class TerraHttpClientTest extends TestCase
         $this->assertEquals($this->testPostParams, $this->httpClient->getLastRequestParams());
     }
 
+    /**
+     * @throws Exception
+     */
     public function testPostParams()
     {
         $this->httpClient
@@ -201,6 +239,9 @@ class TerraHttpClientTest extends TestCase
         $this->assertEquals($this->testPostParams, $this->httpClient->getLastRequestParams());
     }
 
+    /**
+     * @throws Exception
+     */
     public function testPostJsonBody()
     {
         $params = Json::encode($this->testPostParams);

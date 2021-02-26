@@ -59,7 +59,7 @@ class BaseController extends Controller
      * @return mixed
      * @author Adegoke Obasa <goke@cottacush.com>
      */
-    public function afterAction(Action $action, mixed $result): mixed
+    public function afterAction($action, mixed $result): mixed
     {
         $result = parent::afterAction($action, $result);
         $this->setSecurityHeaders();
